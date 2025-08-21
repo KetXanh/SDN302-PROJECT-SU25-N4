@@ -1,7 +1,7 @@
 const User = require('./user.model');
 
-const dt = {}
+const db = {}
 
-dt.User = User;
+db.User = User;
 
-module.exports = dt;
+module.exports = db;

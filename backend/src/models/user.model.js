@@ -33,9 +33,9 @@ const userScheme = new mongoose.Schema({
         required: true,
     },
     avatar: {
-        data: Buffer,  // Store image data
-        contentType: String,  // Store MIME type of the image
-        size: Number  // Store size of the image
+        data: Buffer, 
+        contentType: String,  
+        size: Number 
     },
     status: {
         type: String,

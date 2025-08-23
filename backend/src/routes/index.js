@@ -11,5 +11,6 @@ const userRoutes = require('./user.route');
 // Use routes
 router.use('/auth', authRoutes);
 router.use('/user', userRoutes);
-
+router.use('/', require('./product.admin.route'));
+router.use('/', require('./category.admin.route'));
 module.exports = router;

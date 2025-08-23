@@ -4,7 +4,7 @@ const orderSchema = new mongoose.Schema(
   {
     employeeId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", 
+      ref: "User",
       required: true,
     },
     items: [
@@ -18,10 +18,10 @@ const orderSchema = new mongoose.Schema(
         price: { type: Number, required: true },
       },
     ],
-    totalPrice: {
-      type: Number,
-      required: true,
-    },
+    totalPrice: { type: Number, required: true }, // tổng tiền trước giảm giá
+    discountCode: { type: String, default: null }, // mã giảm giá
+    discountAmount: { type: Number, default: 0 }, // số tiền được giảm
+    finalPrice: { type: Number, required: true }, // tổng tiền sau giảm giá
     status: {
       type: String,
       enum: ["confirmed", "completed", "cancelled"],

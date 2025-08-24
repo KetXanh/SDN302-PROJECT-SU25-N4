@@ -120,9 +120,7 @@ const deleteUser = async (req, res) => {
 //Get User Profile
 const getProfile = async (req, res) => {
     try{
-        const user = await db.User.findById(req.user.id);
-        if (!user) return res.status(404).json({ error: 'User not found' });
-        res.status(200).json(user);
+       res.status(200).json("Test Profile")
     }catch(err){
         res.status(500).json({ error: err.message });
     }

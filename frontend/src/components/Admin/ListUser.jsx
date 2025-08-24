@@ -1,27 +1,74 @@
 import React from 'react';
-
-const users = [
-  { id: 1, name: 'Nguyen Van A', email: 'a@example.com' },
-  { id: 2, name: 'Tran Thi B', email: 'b@example.com' },
-  { id: 3, name: 'Le Van C', email: 'c@example.com' },
-];
+import useUser from '../../hooks/useUser';
 
 const ListUser = () => {
+  const { users, loading, error } = useUser();
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6">
+      <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">User List</h2>
-        <ul className="divide-y divide-gray-200">
-          {users.map((user) => (
-            <li key={user.id} className="py-4 flex justify-between items-center">
-              <div>
-                <p className="text-lg font-medium text-gray-900">{user.name}</p>
-                <p className="text-sm text-gray-500">{user.email}</p>
-              </div>
-              <button className="text-blue-500 hover:underline text-sm">View</button>
-            </li>
-          ))}
-        </ul>
+        {loading && <div className="text-center py-4">Đang tải dữ liệu...</div>}
+        {error && (
+          <div className="text-center py-4 text-red-500">
+            Lỗi tải dữ liệu người dùng!
+          </div>
+        )}
+        <div className="overflow-x-auto">
+          <table className="min-w-full border border-gray-200 rounded-lg">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                  Họ tên
+                </th>
+                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                  Email
+                </th>
+                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                  SĐT
+                </th>
+                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                  Địa chỉ
+                </th>
+                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                  Vai trò
+                </th>
+                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                  Trạng thái
+                </th>
+                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                  Giới tính
+                </th>
+                <th className="px-4 py-2 text-center text-sm font-semibold text-gray-700">
+                  Thao tác
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.id} className="border-t">
+                  <td className="px-4 py-2">{user.fullname}</td>
+                  <td className="px-4 py-2">{user.email}</td>
+                  <td className="px-4 py-2">{user.phone}</td>
+                  <td className="px-4 py-2">{user.address}</td>
+                  <td className="px-4 py-2">{user.role}</td>
+                  <td className="px-4 py-2">{user.status}</td>
+                  <td className="px-4 py-2">{user.gender}</td>
+                  <td className="px-4 py-2 text-center">
+                    <button className="text-blue-500 hover:underline text-sm">
+                      Xem
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {users.length === 0 && !loading && (
+            <div className="text-center py-4 text-gray-500">
+              Không có người dùng nào.
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

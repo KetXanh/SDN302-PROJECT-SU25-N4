@@ -7,9 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Check login status on mount (optional: use refreshToken if available)
   useEffect(() => {
-    // You can implement auto-login with refreshToken here if needed
   }, []);
 
   const login = async (credentials) => {
@@ -17,8 +15,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const data = await authAPI.login(credentials);
       setUser(data.user || null);
-      // Optionally save token to localStorage
-      // localStorage.setItem("token", data.token);
+
       return data;
     } finally {
       setLoading(false);
@@ -30,8 +27,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await authAPI.logout();
       setUser(null);
-      // Optionally remove token from localStorage
-      // localStorage.removeItem("token");
+
     } finally {
       setLoading(false);
     }

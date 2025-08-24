@@ -10,7 +10,7 @@ const userRoutes = require('./user.route');
 const orderRoutes = require("./order");
 // Use routes
 router.use('/auth', authRoutes);
-router.use('/user', userRoutes);
+router.use('/user',authenticateJWT, userRoutes);
 router.use("/order", orderRoutes);
 router.use('/', require('./product.admin.route'));
 router.use('/', require('./category.admin.route'));

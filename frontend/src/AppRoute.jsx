@@ -1,11 +1,7 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import {Route, Routes } from 'react-router-dom';
-import ProductList from "./pages/ProductList";
-import AddProductForm from "./pages/AddProductForm";
-import EditProductForm from "./pages/EditProductForm";
+
 import AdminLayout from "./layout/AdminLayout"; // import AdminLayout
-import "./App.css";
-import OrderList from "./pages/order/OrderList";
 
 //Auth
 const Login = lazy(() => import('./pages/Auth/Login'));
@@ -17,11 +13,24 @@ const AddProductForm = lazy(() => import('./pages/AddProductForm'));
 const EditProductForm = lazy(() => import('./pages/EditProductForm'));
 const OrderList = lazy(() => import('./pages/order/OrderList'));
 
+//Admin
+const ListUser = lazy(() => import('./components/Admin/ListUser'));
+
 function AppRoute() {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      {/* Admin Layout */}
+                <Route path="/" element={<AdminLayout toggleSidebar={toggleSidebar} />}>
+                  <Route path="order" element={<OrderList />} />
+                  <Route path="products" element={<ProductList />} />
+                  <Route path="add-product" element={<AddProductForm />} />
+                  <Route path="edit-product/:id" element={<EditProductForm />} />
+                  <Route path="users" element={<ListUser />} />
+                </Route>
     </Routes>
   )
 }

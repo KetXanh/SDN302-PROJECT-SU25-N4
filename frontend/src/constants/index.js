@@ -28,8 +28,13 @@ export const links = [
     text: "Khách Hàng",
   },
   {
-    href: "/employee-manager",
+    href: "/employee-manage",
     icon: MdOutlineManageAccounts,
     text: "Quản lý nhân viên",
   },
+  {
+    href: "/statistic",
+    icon: FaChartBar,
+    text: "Thống kê",
+  }
 ];

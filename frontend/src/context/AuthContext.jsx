@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
     try {
       const data = await authAPI.login(credentials);
       setUser(data.user || null);
-
       return data;
     } finally {
       setLoading(false);
@@ -27,7 +26,6 @@ export const AuthProvider = ({ children }) => {
     try {
       await authAPI.logout();
       setUser(null);
-
     } finally {
       setLoading(false);
     }

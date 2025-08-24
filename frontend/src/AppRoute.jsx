@@ -14,7 +14,8 @@ const EditProductForm = lazy(() => import('./pages/EditProductForm'));
 const OrderList = lazy(() => import('./pages/order/OrderList'));
 
 //Admin
-const ListUser = lazy(() => import('./components/Admin/ListUser'));
+const ManageUser = lazy(() => import('./pages/Admin/ManageUser'));
+const Statistic = lazy(() => import('./pages/Admin/Statistic'));
 
 function AppRoute() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -29,7 +30,8 @@ function AppRoute() {
                   <Route path="products" element={<ProductList />} />
                   <Route path="add-product" element={<AddProductForm />} />
                   <Route path="edit-product/:id" element={<EditProductForm />} />
-                  <Route path="users" element={<ListUser />} />
+                  <Route path="employee-manage" element={<ManageUser />} />
+                  <Route path="statistic" element={<Statistic />} />
                 </Route>
     </Routes>
   )

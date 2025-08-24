@@ -3,12 +3,14 @@ import { FaMoon, FaSun, FaSignOutAlt } from "react-icons/fa";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useAuth } from "../../context/AuthContext";
 
 const Header = ({ darkMode, toggleDarkMode, toggleSidebar }) => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    await logout();
     toast.success("Đăng xuất thành công !");
     setTimeout(() => {
       navigate("/login");
@@ -16,7 +18,7 @@ const Header = ({ darkMode, toggleDarkMode, toggleSidebar }) => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 z-50 w-full border-b border-gray-200 bg-white dark:bg-gray-900 dark:border-gray-700 shadow-sm">
+    <nav className="top-0 left-0 z-50 w-full border-b border-gray-200 bg-white dark:bg-gray-900 dark:border-gray-700 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Left: Sidebar Toggle + Logo */}
         <div className="flex items-center gap-4">
@@ -28,7 +30,6 @@ const Header = ({ darkMode, toggleDarkMode, toggleSidebar }) => {
           </button>
 
           <a href="#" className="flex items-center gap-2">
-        
             <span className="text-xl font-semibold text-gray-800 dark:text-white">
               Admin
             </span>
@@ -37,7 +38,6 @@ const Header = ({ darkMode, toggleDarkMode, toggleSidebar }) => {
 
         {/* Right: Tools */}
         <div className="flex items-center gap-4">
-         
           {/* Logout */}
           <button
             onClick={handleLogout}

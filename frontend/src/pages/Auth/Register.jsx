@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -7,16 +8,27 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { login, loading } = useAuth();
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     // Call API to register
-    console.log('Registering user...');
+    // You should implement register API in AuthContext for production
+    try {
+      // Example: await register({ name, email, username, password });
+      // For now, auto login after register
+      await login({ username, password });
+      navigate('/');
+    } catch (err) {
+      alert('Đăng ký thất bại!');
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Register</h2>
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          Register
+        </h2>
 
         <div className="space-y-4">
           <input
@@ -54,8 +66,9 @@ const Register = () => {
           <button
             onClick={handleRegister}
             className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
+            disabled={loading}
           >
-            Register
+            {loading ? 'Đang đăng ký...' : 'Register'}
           </button>
 
           <div className="text-center text-sm text-gray-600">

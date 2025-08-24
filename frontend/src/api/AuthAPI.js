@@ -1,5 +1,5 @@
 // src/api/authAPI.js
-import unauthorApi from './baseAPI/unauthorAPI';
+import unauthorApi from './base/unauthorAPI';
 
 const authAPI = {
     // Login

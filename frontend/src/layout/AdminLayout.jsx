@@ -4,14 +4,11 @@ import { Outlet } from "react-router-dom";
 
 export default function AdminLayout() {
   return (
-    <div className="flex">
-      <Sidebar />
-      <div className="flex-1">
-        <HeaderAdmin />
-        <div className="p-4">
-     
+    <div className="flex flex-col">
+      <HeaderAdmin />
+        <div className="flex-1">
+            <Sidebar />
           <Outlet />
-        </div>
       </div>
     </div>
   );

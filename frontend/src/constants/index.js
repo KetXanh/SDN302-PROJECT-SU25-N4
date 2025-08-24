@@ -1,4 +1,4 @@
-import { FaChartBar, FaCartPlus, FaBox,FaUser} from "react-icons/fa";
+import { FaChartBar, FaCartPlus, FaBox,FaUser,FaTag} from "react-icons/fa";
 import { MdOutlineCategory } from "react-icons/md";
 
 export const links = [
@@ -28,8 +28,13 @@ export const links = [
     text: "Sản phẩm",
   },
   {
-    href: "/customers",
+    href: "/customer",
     icon: FaUser,
     text: "Khách Hàng",
+  },
+  {
+    href: "/discount",
+    icon: FaTag,
+    text: "Mã giảm giá",
   },
 ];

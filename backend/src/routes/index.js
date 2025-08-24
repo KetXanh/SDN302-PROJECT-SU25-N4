@@ -8,10 +8,14 @@ const { authenticateJWT } = require('../middlewares/jwtMiddleware');
 const authRoutes = require('./auth.route');
 const userRoutes = require('./user.route');
 const orderRoutes = require("./order");
+const customerRouters = require("./customer");
+const discountRoyters = require("./discount");
 // Use routes
 router.use('/auth', authRoutes);
 router.use('/user', userRoutes);
 router.use("/order", orderRoutes);
+router.use("/customer", customerRouters);
+router.use("/discount", discountRoyters);
 router.use('/', require('./product.admin.route'));
 router.use('/', require('./category.admin.route'));
 

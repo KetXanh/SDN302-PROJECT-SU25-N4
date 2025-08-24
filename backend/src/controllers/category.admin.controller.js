@@ -1,6 +1,6 @@
 // src/controllers/category.admin.controller.js
 
-const Category = require('../models/category.model');
+const Category = require('../models/category');
 
 // Lấy tất cả danh mục
 exports.getAllCategories = async (req, res) => {

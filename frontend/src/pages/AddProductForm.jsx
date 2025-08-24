@@ -1,7 +1,7 @@
 // src/components/AddProductForm.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, XCircle, Package, DollarSign, Hash, Image, FileText, Tag, AlertCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle, XCircle, Package, DollarSign, Image, FileText, Tag, AlertCircle, ToggleLeft, ToggleRight } from 'lucide-react';
 
 const AddProductForm = () => {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ const AddProductForm = () => {
     price: '',
     description: '',
     image: '',
-    stock: '',
+    status: 'Available',
     categoryId: ''
   });
   const [categories, setCategories] = useState([]);
@@ -61,18 +61,6 @@ const AddProductForm = () => {
           errors.price = 'Giá sản phẩm phải là số dương';
         } else if (Number(value) > 1000000000) {
           errors.price = 'Giá sản phẩm không được quá 1 tỷ VND';
-        }
-        break;
-      
-      case 'stock':
-        if (!value) {
-          errors.stock = 'Số lượng tồn kho không được để trống';
-        } else if (isNaN(value) || Number(value) < 0) {
-          errors.stock = 'Số lượng tồn kho phải là số không âm';
-        } else if (Number(value) > 1000000) {
-          errors.stock = 'Số lượng tồn kho không được quá 1 triệu';
-        } else if (!Number.isInteger(Number(value))) {
-          errors.stock = 'Số lượng tồn kho phải là số nguyên';
         }
         break;
       
@@ -134,14 +122,24 @@ const AddProductForm = () => {
     }));
   };
 
+  const handleStatusToggle = () => {
+    const newStatus = formData.status === 'Available' ? 'Unavailable' : 'Available';
+    setFormData(prev => ({
+      ...prev,
+      status: newStatus
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Validate all fields
     let allErrors = {};
     Object.keys(formData).forEach(field => {
-      const errors = validateField(field, formData[field]);
-      allErrors = { ...allErrors, ...errors };
+      if (field !== 'status') { // Skip status validation as it has default value
+        const errors = validateField(field, formData[field]);
+        allErrors = { ...allErrors, ...errors };
+      }
     });
     
     if (Object.keys(allErrors).length > 0) {
@@ -156,8 +154,7 @@ const AddProductForm = () => {
     try {
       const submitData = {
         ...formData,
-        price: Number(formData.price),
-        stock: Number(formData.stock)
+        price: Number(formData.price)
       };
       
       const response = await fetch('http://localhost:3000/api/products', {
@@ -179,7 +176,7 @@ const AddProductForm = () => {
         price: '',
         description: '',
         image: '',
-        stock: '',
+        status: 'Available',
         categoryId: ''
       });
       setFieldErrors({});
@@ -313,29 +310,40 @@ const AddProductForm = () => {
                     </div>
                     
                     <div>
-                      <label htmlFor="stock" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                        <Hash className="w-4 h-4 text-purple-600" />
-                        Số Lượng Tồn Kho *
+                      <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
+                        {formData.status === 'Available' ? (
+                          <ToggleRight className="w-5 h-5 text-green-600" />
+                        ) : (
+                          <ToggleLeft className="w-5 h-5 text-red-600" />
+                        )}
+                        Trạng Thái Sản Phẩm
                       </label>
-                      <input
-                        type="text"
-                        id="stock"
-                        name="stock"
-                        value={formData.stock ? formatNumber(formData.stock) : ''}
-                        onChange={(e) => handleNumberChange(e, 'stock')}
-                        className={`w-full px-4 py-3 rounded-lg border ${
-                          fieldErrors.stock 
-                            ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' 
-                            : 'border-gray-300 focus:border-purple-500 focus:ring-purple-500/20'
-                        } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
-                        placeholder="0"
-                      />
-                      {fieldErrors.stock && (
-                        <div className="flex items-center gap-1 mt-2 text-red-600 text-sm">
-                          <AlertCircle className="w-4 h-4" />
-                          {fieldErrors.stock}
+                      <button
+                        type="button"
+                        onClick={handleStatusToggle}
+                        className={`w-full px-4 py-3 rounded-lg border-2 transition-all duration-200 font-medium ${
+                          formData.status === 'Available'
+                            ? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
+                            : 'border-red-300 bg-red-50 text-red-800 hover:bg-red-100'
+                        }`}
+                      >
+                        <div className="flex items-center justify-center gap-2">
+                          {formData.status === 'Available' ? (
+                            <>
+                              <ToggleRight className="w-5 h-5" />
+                              Có Sẵn
+                            </>
+                          ) : (
+                            <>
+                              <ToggleLeft className="w-5 h-5" />
+                              Hết Hàng
+                            </>
+                          )}
                         </div>
-                      )}
+                      </button>
+                      <p className="text-xs text-gray-500 mt-2">
+                        Nhấn để chuyển đổi trạng thái sản phẩm
+                      </p>
                     </div>
                   </div>
                 </div>

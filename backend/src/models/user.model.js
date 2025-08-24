@@ -29,13 +29,13 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: ['Admin', 'Employee'],
-        default: 'User',
+        default: 'Employee',
         required: true,
     },
     avatar: {
-        data: Buffer,  // Store image data
-        contentType: String,  // Store MIME type of the image
-        size: Number  // Store size of the image
+        data: Buffer, 
+        contentType: String,  
+        size: Number 
     },
     status: {
         type: String,

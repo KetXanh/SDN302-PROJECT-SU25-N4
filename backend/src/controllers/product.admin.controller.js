@@ -4,7 +4,7 @@ const Category = require('../models/category');
 // Thêm sản phẩm mới
 exports.createProduct = async (req, res) => {
     try {
-        const { name, price, description, image, stock, categoryId } = req.body;
+        const { name, price, description, image, categoryId, status } = req.body;
 
         // Kiểm tra xem categoryId có tồn tại không
         const category = await Category.findById(categoryId);
@@ -17,8 +17,8 @@ exports.createProduct = async (req, res) => {
             price,
             description,
             image,
-            stock,
-            categoryId
+            categoryId,
+            status
         });
 
         const savedProduct = await newProduct.save();
@@ -32,7 +32,7 @@ exports.createProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, price, description, image, stock, categoryId } = req.body;
+        const { name, price, description, image, categoryId, status } = req.body;
 
    
         if (categoryId) {
@@ -44,7 +44,7 @@ exports.updateProduct = async (req, res) => {
 
         const updatedProduct = await Product.findByIdAndUpdate(
             id,
-            { name, price, description, image, stock, categoryId },
+            { name, price, description, image, categoryId, status },
             { new: true, runValidators: true }
         );
 
@@ -78,13 +78,16 @@ exports.deleteProduct = async (req, res) => {
 // Lấy tất cả sản phẩm
 exports.getAllProducts = async (req, res) => {
     try {
-        const { page = 1, limit = 6, search = '' } = req.query;
+        const { page = 1, limit = 6, search = '', status } = req.query;
         const pageNumber = parseInt(page, 10);
         const limitNumber = parseInt(limit, 10);
 
         const query = {};
         if (search) {
             query.name = { $regex: search, $options: 'i' }; // Tìm kiếm không phân biệt chữ hoa, chữ thường
+        }
+        if (status) {
+            query.status = status; // Lọc theo trạng thái sản phẩm
         }
 
         const products = await Product.find(query)
@@ -104,6 +107,7 @@ exports.getAllProducts = async (req, res) => {
         res.status(500).json({ message: 'Error fetching products', error: error.message });
     }
 };
+
 // Lấy một sản phẩm theo ID
 exports.getProductById = async (req, res) => {
     try {

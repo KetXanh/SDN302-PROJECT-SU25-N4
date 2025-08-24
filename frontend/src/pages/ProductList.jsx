@@ -215,7 +215,7 @@ const ProductList = () => {
                       Giá
                     </th>
                     <th className="w-32 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Kho
+                      Trạng thái
                     </th>
                     <th className="w-40 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Danh mục
@@ -236,7 +236,7 @@ const ProductList = () => {
                           <div className="flex-shrink-0 h-16 w-16">
                             <img
                               className="h-16 w-16 rounded-md object-cover bg-gray-100"
-                              src={product.image}
+                              src={product.image?.url || product.image}
                               alt={product.name}
                             />
                           </div>
@@ -253,14 +253,12 @@ const ProductList = () => {
                       <td className="w-32 px-6 py-4 text-left">
                         <span
                           className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                            product.stock > 10
+                            product.status === 'Available'
                               ? 'bg-green-100 text-green-800'
-                              : product.stock > 0
-                              ? 'bg-yellow-100 text-yellow-800'
                               : 'bg-red-100 text-red-800'
                           }`}
                         >
-                          {product.stock} in stock
+                          {product.status === 'Available' ? 'Có sẵn' : 'Hết hàng'}
                         </span>
                       </td>
                       <td className="w-40 px-6 py-4 text-sm text-gray-500 text-left truncate">

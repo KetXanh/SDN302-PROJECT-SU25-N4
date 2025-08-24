@@ -1,7 +1,7 @@
 // src/pages/EditProductForm.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Save, XCircle, Image, Package, DollarSign, FileText, Box } from 'lucide-react';
+import { ArrowLeft, Save, XCircle, Image, Package, DollarSign, FileText, ToggleLeft, ToggleRight } from 'lucide-react';
 
 const EditProductForm = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const EditProductForm = () => {
     price: 0,
     description: '',
     image: '',
-    stock: 0,
+    status: 'Available',
     categoryId: ''
   });
   const [categories, setCategories] = useState([]);
@@ -39,12 +39,12 @@ const EditProductForm = () => {
         setFormData({
           name: productData.name,
           price: productData.price,
-          description: productData.description,
-          image: productData.image,
-          stock: productData.stock,
-          categoryId: productData.categoryId._id
+          description: productData.description || '',
+          image: productData.image?.url || productData.image || '',
+          status: productData.status || 'Available',
+          categoryId: productData.categoryId._id || productData.categoryId
         });
-        setImagePreview(productData.image);
+        setImagePreview(productData.image?.url || productData.image || '');
       } catch (err) {
         console.error('Không thể tải dữ liệu:', err);
         setError('Không thể tải dữ liệu sản phẩm hoặc danh mục.');
@@ -66,6 +66,14 @@ const EditProductForm = () => {
     if (name === 'image') {
       setImagePreview(value);
     }
+  };
+
+  const handleStatusToggle = () => {
+    const newStatus = formData.status === 'Available' ? 'Unavailable' : 'Available';
+    setFormData(prev => ({
+      ...prev,
+      status: newStatus
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -198,23 +206,42 @@ const EditProductForm = () => {
                     />
                   </div>
 
-                  {/* Stock Input */}
+                  {/* Status Toggle */}
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <label htmlFor="stock" className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                      <Box size={16} className="mr-2 text-purple-500" />
-                      Số lượng trong kho
+                    <label className="flex items-center text-sm font-medium text-gray-700 mb-3">
+                      {formData.status === 'Available' ? (
+                        <ToggleRight size={16} className="mr-2 text-green-500" />
+                      ) : (
+                        <ToggleLeft size={16} className="mr-2 text-red-500" />
+                      )}
+                      Trạng thái sản phẩm
                     </label>
-                    <input
-                      type="number"
-                      id="stock"
-                      name="stock"
-                      value={formData.stock}
-                      onChange={handleChange}
-                      required
-                      min="0"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                      placeholder="Nhập số lượng tồn kho"
-                    />
+                    <button
+                      type="button"
+                      onClick={handleStatusToggle}
+                      className={`w-full px-4 py-3 rounded-lg border-2 transition-all duration-200 font-medium ${
+                        formData.status === 'Available'
+                          ? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
+                          : 'border-red-300 bg-red-50 text-red-800 hover:bg-red-100'
+                      }`}
+                    >
+                      <div className="flex items-center justify-center gap-2">
+                        {formData.status === 'Available' ? (
+                          <>
+                            <ToggleRight size={18} />
+                            Có Sẵn
+                          </>
+                        ) : (
+                          <>
+                            <ToggleLeft size={18} />
+                            Hết Hàng
+                          </>
+                        )}
+                      </div>
+                    </button>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Nhấn để chuyển đổi trạng thái sản phẩm
+                    </p>
                   </div>
 
                   {/* Category Dropdown */}

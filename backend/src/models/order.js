@@ -30,22 +30,24 @@ const discountSnapshotSchema = new mongoose.Schema(
 
 const orderSchema = new mongoose.Schema(
   {
-    // Nhân viên tạo đơn tại quầy
     employeeId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
 
-    // (Tuỳ chọn) nhận diện khách để tích điểm về sau
-    customerId: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" },
-    customerPhone: { type: String, trim: true },
+    customerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customer",
+      required: false,
+    },
+    customerPhone: { type: String, trim: true, required: false },
 
     items: { type: [orderItemSchema], required: true },
 
-    subtotal: { type: Number, required: true, min: 0 }, // tổng trước giảm
+    subtotal: { type: Number, required: true, min: 0 },
     discount: { type: discountSnapshotSchema, default: undefined },
-    finalTotal: { type: Number, required: true, min: 0 }, // sau giảm
+    finalTotal: { type: Number, required: true, min: 0 },
 
     status: {
       type: String,
@@ -79,7 +81,6 @@ orderSchema.pre("validate", function (next) {
     0
   );
 
-  // tính giảm giá từ snapshot (nếu có)
   let discountAmount = 0;
   if (this.discount && this.discount.type && (this.discount.value ?? 0) > 0) {
     const { type, value, maxAmount = 0 } = this.discount;

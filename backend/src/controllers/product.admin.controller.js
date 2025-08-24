@@ -1,5 +1,5 @@
-const Product = require('../models/product.model');
-const Category = require('../models/category.model');
+const Product = require('../models/product');
+const Category = require('../models/category');
 
 // Thêm sản phẩm mới
 exports.createProduct = async (req, res) => {
@@ -34,7 +34,7 @@ exports.updateProduct = async (req, res) => {
         const { id } = req.params;
         const { name, price, description, image, stock, categoryId } = req.body;
 
-        // Kiểm tra xem categoryId có tồn tại không nếu được cung cấp
+   
         if (categoryId) {
             const category = await Category.findById(categoryId);
             if (!category) {

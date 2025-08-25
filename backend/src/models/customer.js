@@ -9,7 +9,7 @@ const customerSchema = new mongoose.Schema(
       trim: true,
       validate: {
         validator: function (v) {
-          if (!v) return true; // không bắt buộc
+          if (!v) return true; 
           return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
         },
         message: (props) => `${props.value} không đúng định dạng email`,
@@ -31,7 +31,7 @@ const customerSchema = new mongoose.Schema(
   { timestamps: true, versionKey: false }
 );
 
-// Pre-save hook: cập nhật rank dựa trên totalPoints
+
 customerSchema.pre("save", function (next) {
   const points = this.totalPoints || 0;
   if (points >= 1000) this.rank = "Platinum";

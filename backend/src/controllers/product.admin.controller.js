@@ -34,7 +34,7 @@ exports.updateProduct = async (req, res) => {
         const { id } = req.params;
         const { name, price, description, image, categoryId, status } = req.body;
 
-        // Kiểm tra xem categoryId có tồn tại không nếu được cung cấp
+   
         if (categoryId) {
             const category = await Category.findById(categoryId);
             if (!category) {

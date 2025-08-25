@@ -31,14 +31,22 @@ exports.createCategory = async (req, res) => {
 exports.updateCategory = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name } = req.body;
-        if (!name) {
-            return res.status(400).json({ message: 'New category name is required' });
+        // Lấy cả name và description từ request body
+        const { name, description } = req.body; 
+
+        // Kiểm tra xem ít nhất một trong hai trường có tồn tại không
+        if (!name && !description) {
+            return res.status(400).json({ message: 'Name or description is required for update' });
         }
+
+        // Tạo đối tượng chứa dữ liệu cần cập nhật
+        const updateData = {};
+        if (name) updateData.name = name;
+        if (description) updateData.description = description;
 
         const updatedCategory = await Category.findByIdAndUpdate(
             id,
-            { name },
+            updateData, // Sử dụng đối tượng updateData
             { new: true, runValidators: true }
         );
 

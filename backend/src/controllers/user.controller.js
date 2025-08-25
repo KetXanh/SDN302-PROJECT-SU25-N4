@@ -38,6 +38,18 @@ const createUser = async (req, res) => {
         if (!username || !password || !email || !role) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
+        //Check username existed
+        const existingUser = await db.User.findOne({ 'account.username': username });
+        if (existingUser) {
+            return res.status(400).json({ error: 'Username already exists' });
+        }
+
+        //Check email existed
+        const existingEmail = await db.User.findOne({ email });
+        if (existingEmail) {
+            return res.status(400).json({ error: 'Email already exists' });
+        }
+
         const hashPasswordValue = await hashPassword(password);
         const user = await db.User.create({
             account: {

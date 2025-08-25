@@ -31,12 +31,14 @@ export const links = [
     href: "/employee-manage",
     icon: MdOutlineManageAccounts,
     text: "Quản lý nhân viên",
+    role: "Admin"
   },
   {
     href: "/statistic",
     icon: FaChartBar,
     text: "Thống kê",
-  }
+    role: "Admin"
+  },
   {
     href: "/discount",
     icon: FaTag,

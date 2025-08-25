@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProductList from './pages/ProductList';
 import AddProductForm from './pages/AddProductForm'; // Import component AddProductForm
 import EditProductForm from './pages/EditProductForm'; // Import component EditProductForm
+import CategoryList from './pages/CategoryList'; // Import component CategoryList
 import './App.css';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         </header>
         <main>
           <Routes>
+             <Route path="/categories" element={<CategoryList />} />
             <Route path="/products" element={<ProductList />} />
             <Route path="/add-product" element={<AddProductForm />} />
             <Route path="/edit-product/:id" element={<EditProductForm />} />

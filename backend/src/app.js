@@ -16,6 +16,7 @@ applyConfig(app);
 
 // Connect to MongoDB
 connectDB();
+require('dotenv').config();
 
 app.use(morgan('dev'));
 app.use(helmet());

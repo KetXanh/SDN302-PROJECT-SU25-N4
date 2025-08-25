@@ -11,6 +11,15 @@ router.post('/register', authController.register);
 // Logout route
 router.post('/logout', authController.logout);
 
+// Forgot password route
+router.post('/forgot-password', authController.forgotPassword);
+
+// Verify OTP route
+router.post('/verify-otp', authController.verifyOtp);
+
+// Reset password route
+router.post('/reset-password', authController.resetPassword);
+
 // Refresh token route
 router.post('/refresh-token', authController.refreshToken);
 

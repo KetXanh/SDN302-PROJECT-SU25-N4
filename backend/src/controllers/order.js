@@ -1,6 +1,7 @@
 // controllers/orderController.js
 const Order = require("../models/order");
 const Customer = require("../models/customer");
+const User = require("../models/user.model");
 
 // ---------------- HELPER ----------------
 const prepareOrderData = (body) => {
@@ -127,6 +128,90 @@ const deleteOrder = async (req, res) => {
   }
 };
 
+
+// KHÔNG đăng nhập: tạo order với employee mặc định
+const createOrderPublic = async (req, res) => {
+  try {
+    const body = req.body || {};
+    if (!Array.isArray(body.items) || body.items.length === 0) {
+      return res.status(400).json({ message: "Giỏ hàng trống" });
+    }
+
+    const defaultEmpId = process.env.DEFAULT_EMPLOYEE_ID;
+    if (!defaultEmpId) {
+      return res.status(500).json({ message: "Thiếu DEFAULT_EMPLOYEE_ID trong .env" });
+    }
+
+    // bảo đảm employee mặc định tồn tại
+    const emp = await User.findOne({ _id: defaultEmpId, role: "Employee", status: "Active" }).select("_id");
+    if (!emp) {
+      return res.status(500).json({ message: "DEFAULT_EMPLOYEE_ID không hợp lệ hoặc nhân viên không Active" });
+    }
+
+    const newOrder = new Order({
+      employeeId: defaultEmpId,                 // gắn mặc định để pass required
+      customerId: body.customerId || null,
+      customerPhone: body.customerPhone || null,
+      items: body.items,                        
+      subtotal: body.subtotal || 0,             
+      discount: body.discount || undefined,
+      finalTotal: 0,                            
+      paymentMethod: body.paymentMethod || "cash",
+      isPaid: body.isPaid ?? true,
+      note: body.note || "",
+    });
+
+    await newOrder.save();
+
+    const populated = await Order.findById(newOrder._id)
+      .populate("employeeId", "fullname email role")
+      .populate("customerId", "name phone rank")
+      .populate("items.productId", "name price");
+
+    res.status(201).json({ message: "Tạo đơn hàng thành công", data: populated });
+  } catch (err) {
+    console.error("Error creating public order:", err);
+    res.status(500).json({ message: "Error creating order", error: err.message });
+  }
+};
+
+// Nhân viên xác nhận đơn: cập nhật employeeId (và optional: status)
+const assignOrderEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { employeeId, status } = req.body; // status optional: 'confirmed' | 'completed' | 'cancelled'
+
+    if (!employeeId) {
+      return res.status(400).json({ message: "Thiếu employeeId" });
+    }
+
+    const emp = await User.findOne({ _id: employeeId, role: "Employee", status: "Active" }).select("_id");
+    if (!emp) {
+      return res.status(400).json({ message: "employeeId không hợp lệ hoặc nhân viên không Active" });
+    }
+
+    const patch = { employeeId };
+    if (status && ["confirmed", "completed", "cancelled"].includes(status)) {
+      patch.status = status;
+    }
+
+    const order = await Order.findByIdAndUpdate(id, patch, { new: true })
+      .populate("employeeId", "fullname email role")
+      .populate("customerId", "name phone rank")
+      .populate("items.productId", "name price");
+
+    if (!order) {
+      return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
+    }
+
+    res.status(200).json({ message: "Gán nhân viên thành công", data: order });
+  } catch (err) {
+    console.error("Error assigning order:", err);
+    res.status(500).json({ message: "Error assigning order", error: err.message });
+  }
+};
+
+
 // ---------------- EXPORT ----------------
 module.exports = {
   getAllOrders,
@@ -134,4 +219,7 @@ module.exports = {
   createOrder,
   updateOrder,
   deleteOrder,
+
+  createOrderPublic,
+  assignOrderEmployee,
 };

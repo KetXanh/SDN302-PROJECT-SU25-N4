@@ -9,6 +9,10 @@ import OrderList from "./pages/order/OrderList";
 import CustomerList from "./pages/customer/CustomerList";
 import DiscountList from "./components/discount/DiscountList";
 import OrderSummary from "./components/Order";
+import AddOrder from "./pages/order/AddOrder";
+import Checkout from "./pages/order/CheckOut";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -21,6 +25,10 @@ function App() {
     <Router>
       <Routes>
         <Route path="mua" element={<OrderSummary />} />
+        
+        <Route path="/pos" element={<AddOrder/>} />
+
+      <Route path="/checkout" element={<Checkout/>} />
         {/* Admin Layout */}
         <Route path="/" element={<AdminLayout toggleSidebar={toggleSidebar} />}>
           {" "}
@@ -35,5 +43,6 @@ function App() {
     </Router>
   );
 }
+
 
 export default App;

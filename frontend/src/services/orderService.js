@@ -8,3 +8,10 @@ export const createOrder = (data) => axios.post(API_URL, data);
 export const updateOrder = (id, data) => axios.put(`${API_URL}/${id}`, data);
 export const deleteOrder = (id) => axios.delete(`${API_URL}/${id}`);
 
+// KH public tạo order
+export const createOrderPublic = (data) => axios.post(`${API_URL}/public`, data);
+
+// Nhân viên xác nhận (gán employeeId)
+export const assignOrderEmployee = (id, employeeId, status) =>
+  axios.put(`${API_URL}/${id}/assign`, { employeeId, ...(status ? { status } : {}) });
+

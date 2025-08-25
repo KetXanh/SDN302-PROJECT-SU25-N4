@@ -24,14 +24,12 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="mua" element={<OrderSummary />} />
-        
-        <Route path="/pos" element={<AddOrder/>} />
+        {/* <Route path="mua" element={<OrderSummary />} /> */}
 
-      <Route path="/checkout" element={<Checkout/>} />
         {/* Admin Layout */}
         <Route path="/" element={<AdminLayout toggleSidebar={toggleSidebar} />}>
-          {" "}
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/pos" element={<AddOrder />} />{" "}
           <Route path="order" element={<OrderList />} />
           <Route path="customer" element={<CustomerList />} />
           <Route path="discount" element={<DiscountList />} />

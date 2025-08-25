@@ -35,7 +35,7 @@ const ProductList = () => {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      setProducts(data.products);
+     setProducts(Array.isArray(data.products) ? data.products : []);
       setTotalPages(data.totalPages);
     } catch (err) {
       setError('Không thể tải dữ liệu sản phẩm.');

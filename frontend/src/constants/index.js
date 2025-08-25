@@ -3,12 +3,12 @@ import { MdOutlineCategory } from "react-icons/md";
 
 export const links = [
   {
-    href: "/",
+    href: "/pos",
     icon: FaChartBar,
     text: "Trang chủ",
   },
   {
-    href: "/",
+    href: "/pos",
     icon: FaChartBar,
     text: "Trang chủ",
   },

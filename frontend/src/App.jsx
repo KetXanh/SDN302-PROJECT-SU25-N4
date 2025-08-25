@@ -9,7 +9,11 @@ import OrderList from "./pages/order/OrderList";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import { AuthProvider } from "./context/AuthContext";
-import AppRoute from "./AppRoute"
+import AppRoute from "./AppRoute";
+import CustomerList from "./pages/customer/CustomerList";
+import DiscountList from "./components/discount/DiscountList";
+import OrderSummary from "./components/Order";
+
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 

@@ -10,13 +10,17 @@ const userRoutes = require('./user.route');
 const orderRoutes = require("./order");
 const customerRouters = require("./customer");
 const discountRoyters = require("./discount");
+const categoryRoyters = require("./category")
+
 // Use routes
 router.use('/auth', authRoutes);
 router.use('/user',authenticateJWT, userRoutes);
 router.use("/order", orderRoutes);
+router.use("/products", require("./product"));
+router.use("/category",categoryRoyters);
 router.use("/customer", customerRouters);
 router.use("/discount", discountRoyters);
-router.use('/', require('./product.admin.route'));
-router.use('/', require('./category.admin.route'));
+router.use('/admin', require('./product.admin.route'));
+router.use('/admin', require('./category.admin.route'));
 
 module.exports = router;

@@ -36,6 +36,7 @@ const EditProductForm = () => {
           throw new Error('Product not found');
         }
         const productData = await productResponse.json();
+        console.log(productData)
         setFormData({
           name: productData.name,
           price: productData.price,

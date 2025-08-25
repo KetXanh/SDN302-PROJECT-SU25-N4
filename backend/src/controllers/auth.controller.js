@@ -12,12 +12,22 @@ const login = async (req, res) => {
 
     const user = await db.User.findOne({ 'account.username': username });
     if (!user) {
-      return res.status(404).json({ message: "User not found." });
+      return res.status(404).json({ message: "Username or password is incorrect." });
     }
+    
+
 
     const isValidPassword = await isMatch(password, user.account.password);
     if (!isValidPassword) {
-      return res.status(401).json({ message: "Invalid password." });
+      return res.status(401).json({ message: "Username or password is incorrect." });
+    }
+
+    if(user.status === 'Inactive') {
+      return res.status(403).json({ message: "Your account is inactive." });
+    }
+
+    if(user.status === 'Banned') {
+      return res.status(403).json({ message: "Your account is banned." });
     }
 
     const accessToken = generateAccessToken(user._id, user.role);
@@ -58,6 +68,13 @@ const register = async (req, res) => {
       return res.status(400).json({ message: "Username, password, and email are required." });
     }
 
+    if (email) {
+      const existingEmail = await db.User.findOne({ email });
+      if (existingEmail) {
+        return res.status(400).json({ message: "Email already exists." });
+      }
+    }
+
     const existingUser = await db.User.findOne({ 'account.username': username });
 
     if (existingUser) {
@@ -71,8 +88,8 @@ const register = async (req, res) => {
         password: hashedPassword
       },
       email,
-      role: 'User', // Default role
-      status: 'Active' // Default status
+      role: 'Employee',
+      status: 'Active'
     });
 
     await newUser.save();

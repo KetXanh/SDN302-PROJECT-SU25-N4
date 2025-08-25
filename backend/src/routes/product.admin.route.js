@@ -12,7 +12,7 @@ router.put('/:id', productController.updateProduct);
 router.delete('/:id', productController.deleteProduct);
 
 // Route lấy tất cả sản phẩm
-router.get('', productController.getAllProducts);
+router.get('/', productController.getAllProducts);
 
 // Route lấy một sản phẩm theo ID
 router.get('/:id', productController.getProductById);

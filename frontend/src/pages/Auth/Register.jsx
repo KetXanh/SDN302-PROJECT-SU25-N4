@@ -8,11 +8,11 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login, loading } = useAuth();
+  const { register, loading } = useAuth();
 
   const handleRegister = async () => {
     try {
-      await login({ username, password });
+      await register({ name, email, username, password });
       navigate('/');
     } catch (err) {
       alert('Đăng ký thất bại!');

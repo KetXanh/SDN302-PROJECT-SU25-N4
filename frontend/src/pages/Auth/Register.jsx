@@ -11,11 +11,7 @@ const Register = () => {
   const { login, loading } = useAuth();
 
   const handleRegister = async () => {
-    // Call API to register
-    // You should implement register API in AuthContext for production
     try {
-      // Example: await register({ name, email, username, password });
-      // For now, auto login after register
       await login({ username, password });
       navigate('/');
     } catch (err) {
@@ -24,61 +20,57 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-          Register
-        </h2>
-
-        <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="Full Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-
-          <button
-            onClick={handleRegister}
-            className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
-            disabled={loading}
-          >
-            {loading ? 'Đang đăng ký...' : 'Register'}
-          </button>
-
-          <div className="text-center text-sm text-gray-600">
-            Already have an account?{' '}
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="max-w-md w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+        <div className="px-8 py-6">
+          <h2 className="text-2xl font-semibold text-gray-900 text-center mb-6">
+            Đăng ký
+          </h2>
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Họ tên"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            />
+            <input
+              type="text"
+              placeholder="Tên đăng nhập"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            />
+            <input
+              type="password"
+              placeholder="Mật khẩu"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            />
             <button
-              onClick={() => navigate('/login')}
-              className="text-blue-500 hover:underline"
+              onClick={handleRegister}
+              className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded transition"
+              disabled={loading}
             >
-              Login
+              {loading ? 'Đang đăng ký...' : 'Đăng ký'}
             </button>
+            <div className="text-center text-sm text-gray-600">
+              Đã có tài khoản?{' '}
+              <button
+                onClick={() => navigate('/login')}
+                className="text-blue-500 hover:underline"
+              >
+                Đăng nhập
+              </button>
+            </div>
           </div>
         </div>
       </div>

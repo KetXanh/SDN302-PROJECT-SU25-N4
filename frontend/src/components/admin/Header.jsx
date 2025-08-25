@@ -7,7 +7,7 @@ import { useAuth } from "../../context/AuthContext";
 
 const Header = ({ darkMode, toggleDarkMode, toggleSidebar }) => {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   const handleLogout = async () => {
     await logout();
@@ -38,6 +38,12 @@ const Header = ({ darkMode, toggleDarkMode, toggleSidebar }) => {
 
         {/* Right: Tools */}
         <div className="flex items-center gap-4">
+          {/* Username display */}
+          {user && (
+            <span className="text-gray-700 dark:text-gray-200 font-medium">
+              {user.username}
+            </span>
+          )}
           {/* Logout */}
           <button
             onClick={handleLogout}

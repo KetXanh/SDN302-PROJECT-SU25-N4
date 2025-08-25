@@ -1,5 +1,5 @@
 import { FaChartBar, FaCartPlus, FaBox,FaUser,FaTag} from "react-icons/fa";
-import { MdOutlineCategory } from "react-icons/md";
+import { MdOutlineCategory, MdOutlineManageAccounts  } from "react-icons/md";
 
 export const links = [
   {
@@ -8,12 +8,7 @@ export const links = [
     text: "Trang chủ",
   },
   {
-    href: "/pos",
-    icon: FaChartBar,
-    text: "Trang chủ",
-  },
-  {
-    href: "/category",
+    href: "/categories",
     icon: MdOutlineCategory,
     text: "Danh mục",
   },
@@ -31,6 +26,18 @@ export const links = [
     href: "/customer",
     icon: FaUser,
     text: "Khách Hàng",
+  },
+  {
+    href: "/employee-manage",
+    icon: MdOutlineManageAccounts,
+    text: "Quản lý nhân viên",
+    role: "Admin"
+  },
+  {
+    href: "/statistic",
+    icon: FaChartBar,
+    text: "Thống kê",
+    role: "Admin"
   },
   {
     href: "/discount",

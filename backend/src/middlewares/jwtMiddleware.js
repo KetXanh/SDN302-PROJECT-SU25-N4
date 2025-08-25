@@ -8,6 +8,7 @@ const authenticateJWT = (req, res, next) => {
         try {
             const user = verifyAccessToken(token);
             req.user = user;
+            console.log("User in middleware:", user);
             next();
         } catch (error) {
             console.error(error);

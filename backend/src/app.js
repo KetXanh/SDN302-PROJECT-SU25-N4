@@ -7,12 +7,21 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const routes = require('./routes');
 const { logger, applyConfig } = require('./config');
-
+const { testSendMail } = require('./utils/Mailer');
 const app = express();
 app.use(cookieParser());
 
 // Apply middlewares
 applyConfig(app);
+
+// Test email sending (uncomment to test)
+// testSendMail((err, info) => {
+//     if (err) {
+//         console.error('Error sending test email:', err);
+//     } else {
+//         console.log('Test email sent:', info.response);
+//     }
+// });
 
 // Connect to MongoDB
 connectDB();

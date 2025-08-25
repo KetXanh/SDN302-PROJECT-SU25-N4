@@ -2,6 +2,7 @@
 const Order = require("../models/order");
 const Customer = require("../models/customer");
 const User = require("../models/user.model");
+require('dotenv').config();
 
 // ---------------- HELPER ----------------
 const prepareOrderData = (body) => {
@@ -137,19 +138,19 @@ const createOrderPublic = async (req, res) => {
       return res.status(400).json({ message: "Giỏ hàng trống" });
     }
 
-    const defaultEmpId = process.env.DEFAULT_EMPLOYEE_ID;
-    if (!defaultEmpId) {
-      return res.status(500).json({ message: "Thiếu DEFAULT_EMPLOYEE_ID trong .env" });
+    const employeeId = req.user.id;
+    if (!employeeId) {
+      return res.status(500).json({ message: "Thiếu employeeId trong JWT" });
     }
 
     // bảo đảm employee mặc định tồn tại
-    const emp = await User.findOne({ _id: defaultEmpId, role: "Employee", status: "Active" }).select("_id");
+    const emp = await User.findOne({ _id: employeeId }).select("_id");
     if (!emp) {
-      return res.status(500).json({ message: "DEFAULT_EMPLOYEE_ID không hợp lệ hoặc nhân viên không Active" });
+      return res.status(500).json({ message: "employeeId không hợp lệ hoặc nhân viên không Active" });
     }
 
     const newOrder = new Order({
-      employeeId: defaultEmpId,                 // gắn mặc định để pass required
+      employeeId: employeeId,                 // gắn mặc định để pass required
       customerId: body.customerId || null,
       customerPhone: body.customerPhone || null,
       items: body.items,                        
@@ -219,7 +220,6 @@ module.exports = {
   createOrder,
   updateOrder,
   deleteOrder,
-
   createOrderPublic,
   assignOrderEmployee,
 };

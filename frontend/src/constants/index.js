@@ -3,12 +3,12 @@ import { MdOutlineCategory, MdOutlineManageAccounts  } from "react-icons/md";
 
 export const links = [
   {
-    href: "/",
+    href: "/pos",
     icon: FaChartBar,
     text: "Trang chủ",
   },
   {
-    href: "/category",
+    href: "/categories",
     icon: MdOutlineCategory,
     text: "Danh mục",
   },

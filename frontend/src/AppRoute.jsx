@@ -19,6 +19,10 @@ const OrderList = lazy(() => import('./pages/order/OrderList'));
 import CustomerList from "./pages/customer/CustomerList";
 import DiscountList from "./components/discount/DiscountList";
 import OrderSummary from "./components/Order";
+import CategoryList from './pages/CategoryList'; // Import component CategoryList
+import AddOrder from './pages/order/AddOrder';
+import Checkout from './pages/order/Checkout';
+
 //Admin
 const ManageUser = lazy(() => import('./pages/Admin/ManageUser'));
 const Statistic = lazy(() => import('./pages/Admin/Statistic'));
@@ -38,6 +42,9 @@ function AppRoute() {
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<AdminLayout toggleSidebar={toggleSidebar} />}>
           <Route path="order" element={<OrderList />} />
+          <Route path="/categories" element={<CategoryList />} />
+          <Route path="/pos" element={<AddOrder />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="products" element={<ProductList />} />
           <Route path="add-product" element={<AddProductForm />} />
           <Route path="edit-product/:id" element={<EditProductForm />} />

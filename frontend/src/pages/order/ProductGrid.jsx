@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { getProductsCus } from "../../services/productService";   
+import { getProducts } from "../../services/productService";   
 import { getCategories } from "../../services/categoryService";  
 import ProductCard from "./ProductCard";
 
@@ -9,7 +9,7 @@ const ProductGrid = ({ onAdd }) => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-
+  const [filtered, setFiltered] = useState([]);
   // Load danh mục (tabs động)
   useEffect(() => {
     let mounted = true;
@@ -21,30 +21,34 @@ const ProductGrid = ({ onAdd }) => {
 
   // Load sản phẩm (search q)
   useEffect(() => {
-    let mounted = true;
-    (async () => {
+    const fetchProducts = async () => {
       setLoading(true);
-      try {          
-       const { data } = await getProductsCus(q);
-        if (mounted) setProducts(data || []);
+      try {
+        const data = await getProducts();
+        setProducts(data.data.products || []);
       } catch {
-        if (mounted) setProducts([]);
+        setProducts([]);
       } finally {
         setLoading(false);
       }
-    })();
-    return () => (mounted = false);
-  }, [q]);
+    };
+    fetchProducts();
+  }, []);
 
-  // Lọc theo categoryId đã chọn (cover cả string hoặc object {_id})
-  const filtered = useMemo(() => {
-    if (active === "all") return products;
-    return products.filter((p) => {
+  // Filter product by search query and category
+  useEffect(() => {
+    const lowerCaseQuery = q.toLowerCase();
+    if (active === "all") {
+      setFiltered(products.filter((p) => p.name.toLowerCase().includes(lowerCaseQuery)));
+      return;
+    }
+    const filtered = products.filter((p) => {
       const cat = p.categoryId;
       const catId = typeof cat === "string" ? cat : cat?._id;
-      return catId === active;
+      return catId === active && p.name.toLowerCase().includes(lowerCaseQuery);
     });
-  }, [products, active]);
+    setFiltered(filtered);
+  }, [products, active, q]);
 
   return (
     <>

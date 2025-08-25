@@ -1,10 +1,19 @@
-// src/routes/category.admin.route.js
+
 
 const express = require('express');
 const router = express.Router();
 const categoryController = require('../controllers/category.admin.controller');
 
-// Route lấy tất cả danh mục
+
 router.get('/categories', categoryController.getAllCategories);
+
+
+router.post('/categories', categoryController.createCategory);
+
+
+router.put('/categories/:id', categoryController.updateCategory);
+
+
+router.delete('/categories/:id', categoryController.deleteCategory);
 
 module.exports = router;

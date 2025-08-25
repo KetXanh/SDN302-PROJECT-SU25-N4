@@ -4,10 +4,16 @@ import authAPI from "../api/AuthAPI";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Sync user state with localStorage on mount
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
 
   const login = async (credentials) => {
@@ -15,6 +21,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const data = await authAPI.login(credentials);
       setUser(data.user || null);
+      localStorage.setItem("user", JSON.stringify(data.user));
       return data;
     } finally {
       setLoading(false);
@@ -26,6 +33,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await authAPI.logout();
       setUser(null);
+      localStorage.removeItem("user");
     } finally {
       setLoading(false);
     }

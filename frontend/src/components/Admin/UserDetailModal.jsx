@@ -27,7 +27,7 @@ const UserDetailModal = ({ open, onClose, user }) => {
                 Họ tên
               </label>
               <div className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-900">
-                {user.fullname}
+                {user?.fullname || <span className="text-gray-500">Chưa có họ tên</span>}
               </div>
             </div>
             <div>
@@ -36,7 +36,7 @@ const UserDetailModal = ({ open, onClose, user }) => {
                 Email
               </label>
               <div className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-900">
-                {user.email}
+                {user?.email || <span className="text-gray-500">Chưa có email</span>}
               </div>
             </div>
             <div>
@@ -45,7 +45,7 @@ const UserDetailModal = ({ open, onClose, user }) => {
                 Số điện thoại
               </label>
               <div className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-900">
-                {user.phone}
+                {user?.phone || <span className="text-gray-500">Chưa có số điện thoại</span>}
               </div>
             </div>
           </div>
@@ -56,7 +56,7 @@ const UserDetailModal = ({ open, onClose, user }) => {
                 Địa chỉ
               </label>
               <div className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-900">
-                {user.address}
+                {user?.address || <span className="text-gray-500">Chưa có địa chỉ</span>}
               </div>
             </div>
             <div>

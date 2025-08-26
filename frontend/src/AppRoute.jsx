@@ -1,8 +1,10 @@
 import React, { lazy, Suspense, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
 
 import AdminLayout from "./layout/AdminLayout"; // import AdminLayout
 import ProtectedRoute from "./layout/ProtectedRoute";
+import AdminProtectedRoute from "./layout/AdminProtectedRoute";
 
 //Auth
 const Login = lazy(() => import('./pages/Auth/Login'));
@@ -27,14 +29,40 @@ import Checkout from './pages/order/Checkout';
 const ManageUser = lazy(() => import('./pages/Admin/ManageUser'));
 const Statistic = lazy(() => import('./pages/Admin/Statistic'));
 
+function AuthRedirect({ children }) {
+  const { user } = useAuth();
+  return user ? <Navigate to="/pos" replace /> : children;
+}
+
 function AppRoute() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route
+        path="/login"
+        element={
+          <AuthRedirect>
+            <Login />
+          </AuthRedirect>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <AuthRedirect>
+            <Register />
+          </AuthRedirect>
+        }
+      />
+      <Route
+        path="/forgot-password"
+        element={
+          <AuthRedirect>
+            <ForgotPassword />
+          </AuthRedirect>
+        }
+      />
 
       <Route path="mua" element={<OrderSummary />} />
 
@@ -48,8 +76,12 @@ function AppRoute() {
           <Route path="products" element={<ProductList />} />
           <Route path="add-product" element={<AddProductForm />} />
           <Route path="edit-product/:id" element={<EditProductForm />} />
-          <Route path="employee-manage" element={<ManageUser />} />
-          <Route path="statistic" element={<Statistic />} />
+          {/* Admin only routes */}
+          <Route element={<AdminProtectedRoute />}>
+            <Route path="employee-manage" element={<ManageUser />} />
+            <Route path="statistic" element={<Statistic />} />
+          </Route>
+          {/* Other routes */}
           <Route path="customer" element={<CustomerList />} />
           <Route path="discount" element={<DiscountList />} />
         </Route>

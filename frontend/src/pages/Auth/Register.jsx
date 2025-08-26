@@ -3,19 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const Register = () => {
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const navigate = useNavigate();
   const { register, loading } = useAuth();
 
   const handleRegister = async () => {
+    setErrorMsg('');
+    setSuccessMsg('');
     try {
-      await register({ name, email, username, password });
-      navigate('/');
+      await register({ email, username, password });
+      setSuccessMsg('Đăng ký thành công!');
+      setTimeout(() => {
+        navigate('/pos');
+      }, 1200);
     } catch (err) {
-      alert('Đăng ký thất bại!');
+      console.log(err);
+      setErrorMsg(err.response?.data?.message || 'Đăng ký thất bại!');
     }
   };
 
@@ -26,14 +33,17 @@ const Register = () => {
           <h2 className="text-2xl font-semibold text-gray-900 text-center mb-6">
             Đăng ký
           </h2>
+          {errorMsg && (
+            <div className="mb-4 px-4 py-2 bg-red-100 border border-red-300 text-red-700 rounded text-sm text-center">
+              {errorMsg}
+            </div>
+          )}
+          {successMsg && (
+            <div className="mb-4 px-4 py-2 bg-green-100 border border-green-300 text-green-700 rounded text-sm text-center">
+              {successMsg}
+            </div>
+          )}
           <div className="space-y-4">
-            <input
-              type="text"
-              placeholder="Họ tên"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none"
-            />
             <input
               type="email"
               placeholder="Email"

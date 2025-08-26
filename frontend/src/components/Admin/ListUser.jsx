@@ -3,12 +3,15 @@ import useUser from '../../hooks/useUser';
 
 //Icon
 import { Search } from 'lucide-react';
-import { Edit2, Ban, CheckCircle, UserPlus, Eye} from 'lucide-react';
+import { Edit2, Ban, CheckCircle, UserPlus, Eye } from 'lucide-react';
 
 // Modal components
 import AddUserModal from './AddUserModal';
 import EditUserModal from './EditUserModal';
 import UserDetailModal from './UserDetailModal';
+import ConfirmModal from '../Common/ConfirmModal';
+
+const PAGE_SIZE = 5;
 
 const ListUser = () => {
   const { users, loading, error, updateUser, banUser, activateUser } = useUser();
@@ -20,21 +23,37 @@ const ListUser = () => {
 
   const [openDetail, setOpenDetail] = useState(false);
 
+  const [page, setPage] = useState(1);
+
+  // Confirm modal state
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmAction, setConfirmAction] = useState(() => () => {});
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [confirmType, setConfirmType] = useState('default');
+
+  // Lọc user theo tên, email, vai trò, trạng thái, số điện thoại
+  const filteredUsers = users.filter((user) => {
+    const keyword = search.trim().toLowerCase();
+    if (!keyword) return user._id !== '64a7f1f4f1d2c9b1c8e4e8a3';
+    return (
+      (user.fullname?.toLowerCase().includes(keyword) ||
+        user.email?.toLowerCase().includes(keyword)) &&
+      user._id !== '64a7f1f4f1d2c9b1c8e4e8a3'
+    );
+  });
+
+  // Pagination logic
+  const totalPage = Math.ceil(filteredUsers.length / PAGE_SIZE);
+  const paginatedUsers = filteredUsers.slice(
+    (page - 1) * PAGE_SIZE,
+    page * PAGE_SIZE
+  );
+
   const handleOpenDetail = (id) => {
     const user = filteredUsers.find((user) => user.id === id);
     setSelectedUser(user);
     setOpenDetail(true);
   };
-
-  // Lọc user theo tên, email, vai trò, trạng thái, số điện thoại
-  const filteredUsers = users.filter((user) => {
-    const keyword = search.trim().toLowerCase();
-    if (!keyword) return true;
-    return (
-      (user.fullname?.toLowerCase().includes(keyword) ||
-      user.email?.toLowerCase().includes(keyword) ) && user._id !== '64a7f1f4f1d2c9b1c8e4e8a3' // Exclude admin user
-    );
-  });
 
   const handleBan = async (id) => {
     await banUser(id);
@@ -55,6 +74,31 @@ const ListUser = () => {
     await updateUser(selectedUser.id, updatedUser);
     setOpenEdit(false);
     setSelectedUser(null);
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPage) return;
+    setPage(newPage);
+  };
+
+  // Reset page when search changes
+  React.useEffect(() => {
+    setPage(1);
+  }, [search, users.length]);
+
+  // Confirm ban/activate
+  const handleConfirmBan = (id) => {
+    setConfirmMessage('Bạn có chắc chắn muốn khóa người dùng này?');
+    setConfirmAction(() => () => handleBan(id));
+    setConfirmOpen(true);
+    setConfirmType('ban');
+  };
+
+  const handleConfirmActivate = (id) => {
+    setConfirmMessage('Bạn có chắc chắn muốn mở khóa người dùng này?');
+    setConfirmAction(() => () => handleActivate(id));
+    setConfirmOpen(true);
+    setConfirmType('active');
   };
 
   return (
@@ -116,6 +160,15 @@ const ListUser = () => {
         open={openDetail}
         onClose={() => setOpenDetail(false)}
         user={selectedUser}
+      />
+
+      {/* Confirm Modal */}
+      <ConfirmModal
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={confirmAction}
+        message={confirmMessage}
+        type={confirmType}
       />
 
       {/* Main Content */}
@@ -185,10 +238,10 @@ const ListUser = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredUsers.map((user, idx) => (
+                  {paginatedUsers.map((user, idx) => (
                     <tr key={user.id} className="hover:bg-gray-50">
                       <td className="w-16 px-6 py-4 text-sm text-gray-500 text-left">
-                        {idx + 1}
+                        {(page - 1) * PAGE_SIZE + idx + 1}
                       </td>
                       <td className="px-6 py-4 text-left">{user.fullname}</td>
                       <td className="px-6 py-4 text-left">{user.email}</td>
@@ -219,7 +272,7 @@ const ListUser = () => {
                           {user.status === 'Active' ? (
                             <button
                               className="text-red-500 hover:bg-red-100 p-2 rounded"
-                              onClick={() => handleBan(user.id)}
+                              onClick={() => handleConfirmBan(user.id)}
                               title="Ban"
                             >
                               <Ban size={18} />
@@ -227,7 +280,7 @@ const ListUser = () => {
                           ) : (
                             <button
                               className="text-green-500 hover:bg-green-100 p-2 rounded"
-                              onClick={() => handleActivate(user.id)}
+                              onClick={() => handleConfirmActivate(user.id)}
                               title="Active"
                             >
                               <CheckCircle size={18} />
@@ -246,6 +299,36 @@ const ListUser = () => {
                   ))}
                 </tbody>
               </table>
+            </div>
+            {/* Pagination */}
+            <div className="flex justify-center items-center gap-2 py-6">
+              <button
+                className="px-3 py-1 rounded border bg-gray-100 text-gray-700 hover:bg-gray-200"
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page === 1}
+              >
+                &lt;
+              </button>
+              {Array.from({ length: Math.max(totalPage, 1) }, (_, i) => (
+                <button
+                  key={i + 1}
+                  className={`px-3 py-1 rounded border ${
+                    page === i + 1
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                  onClick={() => handlePageChange(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                className="px-3 py-1 rounded border bg-gray-100 text-gray-700 hover:bg-gray-200"
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page === Math.max(totalPage, 1)}
+              >
+                &gt;
+              </button>
             </div>
           </div>
         )}

@@ -7,14 +7,19 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const navigate = useNavigate();
   const { login, loading } = useAuth();
 
   const handleLogin = async () => {
     setErrorMsg('');
+    setSuccessMsg('');
     try {
       await login({ username, password });
-      navigate('/');
+      setSuccessMsg('Đăng nhập thành công!');
+      setTimeout(() => {
+        navigate('/pos');
+      }, 1200);
     } catch (err) {
       setErrorMsg(err?.response?.data?.message || 'Đăng nhập thất bại!');
     }
@@ -30,6 +35,11 @@ const Login = () => {
           {errorMsg && (
             <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded text-center">
               {errorMsg}
+            </div>
+          )}
+          {successMsg && (
+            <div className="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded text-center">
+              {successMsg}
             </div>
           )}
           <div className="space-y-4">
@@ -71,13 +81,13 @@ const Login = () => {
                 Đăng ký
               </button>
             </div>
-            <button
+            {/* <button
               onClick={() => console.log('Login with Google')}
               className="w-full flex items-center justify-center border border-gray-300 py-2 rounded-md hover:bg-gray-50 transition"
             >
               <FcGoogle className="mr-2 text-xl" />
               Đăng nhập với Google
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getDiscounts, deleteDiscount } from "../../services/discountService";
-import { Plus, Trash2, Edit } from "lucide-react";
+import {
+  getDiscounts,
+  deleteDiscount,
+  toggleDiscountActive,
+} from "../../services/discountService";
+import { Plus, Trash2 } from "lucide-react";
 import AddDiscountModal from "./AddDiscountModal";
 
 const DiscountList = () => {
@@ -15,6 +19,16 @@ const DiscountList = () => {
     try {
       const res = await getDiscounts();
       setDiscounts(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleToggle = async (id) => {
+    try {
+      const res = await toggleDiscountActive(id);
+      alert(res.message);
+      fetchDiscounts();
     } catch (err) {
       console.error(err);
     }
@@ -37,11 +51,12 @@ const DiscountList = () => {
         <h1 className="text-2xl font-bold">Mã giảm giá</h1>
         <button
           onClick={() => setAddOpen(true)}
-          className="flex items-center gap-1 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
+          className="flex items-center gap-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-800"
         >
           <Plus className="w-4 h-4" /> Thêm
         </button>
       </div>
+
       <table className="w-full text-left bg-white rounded-xl shadow overflow-hidden">
         <thead className="bg-gray-100 text-sm text-gray-600 uppercase">
           <tr>
@@ -49,6 +64,9 @@ const DiscountList = () => {
             <th className="p-3">Code</th>
             <th className="p-3">Loại</th>
             <th className="p-3">Giá trị</th>
+            <th className="p-3">Giảm tối đa</th>
+            <th className="p-3">Đơn tối thiểu</th>
+            <th className="p-3">Trạng thái</th>
             <th className="p-3">Rank áp dụng</th>
             <th className="p-3">Hành động</th>
           </tr>
@@ -63,6 +81,23 @@ const DiscountList = () => {
                 {d.value}
                 {d.type === "percent" ? "%" : "đ"}
               </td>
+              <td className="p-3">{d.maxAmount || "N/A"}</td>
+              <td className="p-3">{d.minOrderValue || "N/A"}</td>
+
+              {/* 👇 Thêm button toggle */}
+              <td className="p-3">
+                <button
+                  onClick={() => handleToggle(d._id)}
+                  className={`px-3 py-1 rounded-lg text-white ${
+                    d.isActive
+                      ? "bg-green-500 hover:bg-green-600"
+                      : "bg-red-500 hover:bg-red-600"
+                  }`}
+                >
+                  {d.isActive ? "Active" : "Inactive"}
+                </button>
+              </td>
+
               <td className="p-3">{d.customerRank}</td>
               <td className="p-3 flex gap-2">
                 <button

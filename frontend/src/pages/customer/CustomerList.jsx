@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { getCustomers, deleteCustomer } from "../../services/customerService";
-import { Edit, Trash2, Plus } from "lucide-react";
+import { getCustomers, deleteCustomer ,exportCustomers} from "../../services/customerService";
+import { Edit, Trash2, Plus, Download } from "lucide-react";
 import AddCustomerModal from "./AddCustomer";
 import EditCustomerModal from "./EditCustomer";
 
@@ -66,6 +66,26 @@ const CustomerList = () => {
             className="flex items-center gap-1 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
           >
             <Plus className="w-4 h-4" /> Thêm
+          </button>
+          <button
+            onClick={async () => {
+              try {
+                const res = await exportCustomers();
+                const url = window.URL.createObjectURL(new Blob([res.data]));
+                const link = document.createElement("a");
+                link.href = url;
+                link.setAttribute("download", "customers.xlsx"); // tên file tải về
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+              } catch (err) {
+                console.error("Error exporting customers", err);
+                alert("Xuất Excel thất bại!");
+              }
+            }}
+            className="flex items-center gap-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          >
+            <Download className="w-4 h-4" /> Xuất Excel
           </button>
         </div>
       </div>

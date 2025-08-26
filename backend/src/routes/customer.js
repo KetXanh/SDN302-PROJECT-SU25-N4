@@ -7,5 +7,6 @@ router.get("/:id", customerController.getCustomerById);
 router.post("/", customerController.createCustomer);
 router.put("/:id", customerController.updateCustomer);
 router.delete("/:id", customerController.deleteCustomer);
+router.get("/export/excel", customerController.exportCustomers);
 
 module.exports = router;

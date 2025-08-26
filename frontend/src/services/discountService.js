@@ -17,3 +17,12 @@ export const getDiscountByCode = async (code) => {
     return null;
   }
 };
+export const toggleDiscountActive = async (id) => {
+  try {
+    const res = await axios.patch(`${API_URL}/${id}/active`);
+    return res.data;
+  } catch (err) {
+    console.error("Error toggling discount active", err);
+    throw err;
+  }
+};

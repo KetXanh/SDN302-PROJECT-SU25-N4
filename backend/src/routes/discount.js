@@ -8,6 +8,7 @@ router.get("/", discountController.getDiscounts);
 router.post("/", discountController.createDiscount);
 router.put("/:id", discountController.updateDiscount);
 router.delete("/:id", discountController.deleteDiscount);
+router.patch("/:id/active", discountController.toggleDiscountActive);
 
 // Áp dụng discount khi checkout
 router.post("/apply", discountController.applyDiscount);

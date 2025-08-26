@@ -5,7 +5,7 @@ const Customer = require("../models/customer");
 const getDiscounts = async (req, res) => {
   try {
     const { rank } = req.query;
-    let query = { isActive: true };
+     let query = {};
     if (rank) query.customerRank = rank;
 
     const discounts = await Discount.find(query).sort({ value: -1 });
@@ -15,6 +15,7 @@ const getDiscounts = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 // Tạo discount
 const createDiscount = async (req, res) => {
@@ -54,7 +55,7 @@ const deleteDiscount = async (req, res) => {
 // Áp dụng discount khi checkout
 const applyDiscount = async (req, res) => {
   try {
-    const { customerPhone, orderTotal } = req.body;
+    const { customerPhone, orderTotal, channel } = req.body;
     let customer = null;
 
     if (customerPhone) {
@@ -62,23 +63,44 @@ const applyDiscount = async (req, res) => {
     }
 
     const rank = customer?.rank || "Normal";
+
+    // Tìm discount phù hợp
     const discount = await Discount.findOne({
       isActive: true,
       customerRank: rank,
+      channel: { $in: [channel, "all"] },
+      $or: [
+        { usageLimit: 0 }, // không giới hạn
+        { $expr: { $lt: ["$usedCount", "$usageLimit"] } },
+      ],
+      $or: [{ startDate: null }, { startDate: { $lte: new Date() } }],
+      $or: [{ endDate: null }, { endDate: { $gte: new Date() } }],
     }).sort({ value: -1 });
 
-    if (!discount) return res.json({ discount: null, finalTotal: orderTotal });
-
-    let discountAmount = 0;
-    if (discount.type === "percent") {
-      discountAmount = Math.round(orderTotal * (discount.value / 100));
-    } else {
-      discountAmount = discount.value;
+    if (!discount) {
+      return res.json({ discount: null, finalTotal: orderTotal });
     }
 
-    if (discount.maxAmount > 0)
+    // Check min order value
+    if (orderTotal < discount.minOrderValue) {
+      return res.json({ discount: null, finalTotal: orderTotal });
+    }
+
+    // Tính số tiền giảm
+    let discountAmount =
+      discount.type === "percent"
+        ? Math.round(orderTotal * (discount.value / 100))
+        : discount.value;
+
+    if (discount.maxAmount > 0) {
       discountAmount = Math.min(discountAmount, discount.maxAmount);
+    }
     discountAmount = Math.max(0, Math.min(discountAmount, orderTotal));
+
+    // Tăng số lần đã dùng
+    await Discount.findByIdAndUpdate(discount._id, {
+      $inc: { usedCount: 1 },
+    });
 
     res.json({
       discount: {
@@ -117,6 +139,22 @@ const getByCode = async (req, res) => {
     res.status(500).json({ message: "Error fetching discount", error: err.message });
   }
 };
+const toggleDiscountActive = async (req, res) => {
+  try {
+    const discount = await Discount.findById(req.params.id);
+    if (!discount) {
+      return res.status(404).json({ message: "Discount not found" });
+    }
+
+    discount.isActive = !discount.isActive;
+    await discount.save(); // 🔥 lưu thay đổi vào DB
+
+    res.json({ message: "Status updated successfully", discount });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 module.exports = {
   getDiscounts,
@@ -125,4 +163,5 @@ module.exports = {
   deleteDiscount,
   applyDiscount,
   getByCode,
+  toggleDiscountActive
 };

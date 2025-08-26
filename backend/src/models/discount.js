@@ -16,11 +16,10 @@ const discountSchema = new mongoose.Schema(
     usageLimit: { type: Number, default: 0 },
     usedCount: { type: Number, default: 0 }, 
     channel: { type: String, enum: ["counter", "all"], default: "counter" },     
-    isActive: { type: Boolean, default: true }, // Có đang kích hoạt
+    isActive: { type: Boolean, default: true }, 
     startDate: { type: Date, default: Date.now },
     endDate: { type: Date },
     customerRank: {
-      // Áp dụng cho rank nào
       type: String,
       enum: ["Normal", "Silver", "Gold", "Platinum"],
       default: "Normal",

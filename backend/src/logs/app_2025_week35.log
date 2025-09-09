@@ -1,0 +1,141 @@
+[2025-08-26 16:06:28] INFO: Server running on http://localhost:3000
+[2025-08-26 16:06:28] INFO: MongoDB connected successfully
+[2025-08-26 16:06:54] INFO: Server running on http://localhost:3000
+[2025-08-26 16:06:54] INFO: MongoDB connected successfully
+[2025-08-26 16:06:58] INFO: User: Guest | Method: PUT | URL: /api/user/activate/68a72407b93d0e730c1b892f
+[2025-08-26 16:06:58] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:08:01] INFO: Server running on http://localhost:3000
+[2025-08-26 16:08:02] INFO: MongoDB connected successfully
+[2025-08-26 16:08:03] INFO: User: Guest | Method: POST | URL: /api/auth/logout
+[2025-08-26 16:08:07] INFO: User: Guest | Method: POST | URL: /api/auth/login
+[2025-08-26 16:08:08] INFO: User: Guest | Method: GET | URL: /api/categories
+[2025-08-26 16:08:08] INFO: User: Guest | Method: GET | URL: /api/products
+[2025-08-26 16:08:08] INFO: User: Guest | Method: GET | URL: /api/categories
+[2025-08-26 16:08:08] INFO: User: Guest | Method: GET | URL: /api/products
+[2025-08-26 16:08:13] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:08:13] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:08:13] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:08:13] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:08:13] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:08:13] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:09:17] INFO: Server running on http://localhost:3000
+[2025-08-26 16:09:17] INFO: MongoDB connected successfully
+[2025-08-26 16:09:20] INFO: Server running on http://localhost:3000
+[2025-08-26 16:09:20] INFO: MongoDB connected successfully
+[2025-08-26 16:09:35] INFO: Server running on http://localhost:3000
+[2025-08-26 16:09:35] INFO: MongoDB connected successfully
+[2025-08-26 16:09:53] INFO: Server running on http://localhost:3000
+[2025-08-26 16:09:53] INFO: MongoDB connected successfully
+[2025-08-26 16:10:01] INFO: Server running on http://localhost:3000
+[2025-08-26 16:10:01] INFO: MongoDB connected successfully
+[2025-08-26 16:10:10] INFO: Server running on http://localhost:3000
+[2025-08-26 16:10:10] INFO: MongoDB connected successfully
+[2025-08-26 16:10:26] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:10:26] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:10:26] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:10:26] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:10:26] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:10:26] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:10:52] INFO: Server running on http://localhost:3000
+[2025-08-26 16:10:52] INFO: MongoDB connected successfully
+[2025-08-26 16:10:54] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:10:54] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:10:54] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:10:54] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:10:54] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:10:54] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:11:39] INFO: Server running on http://localhost:3000
+[2025-08-26 16:11:39] INFO: MongoDB connected successfully
+[2025-08-26 16:12:26] INFO: Server running on http://localhost:3000
+[2025-08-26 16:12:26] INFO: MongoDB connected successfully
+[2025-08-26 16:14:12] INFO: Server running on http://localhost:3000
+[2025-08-26 16:14:12] INFO: MongoDB connected successfully
+[2025-08-26 16:17:12] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:17:12] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:17:12] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:17:12] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:17:12] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:17:12] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:17:17] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/order
+[2025-08-26 16:17:17] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/order
+[2025-08-26 16:17:20] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:17:20] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:17:20] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:17:21] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:17:21] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:17:21] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:20:10] INFO: Server running on http://localhost:3000
+[2025-08-26 16:20:11] INFO: MongoDB connected successfully
+[2025-08-26 16:20:15] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:20:15] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:20:15] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:20:15] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:20:15] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:20:15] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:20:16] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/order
+[2025-08-26 16:20:16] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/order
+[2025-08-26 16:20:17] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:20:17] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:20:17] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:20:17] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:20:17] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:20:17] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:20:17] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/customer
+[2025-08-26 16:20:17] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/customer
+[2025-08-26 16:34:15] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/customer
+[2025-08-26 16:34:15] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/customer
+[2025-08-26 16:34:25] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/categories
+[2025-08-26 16:34:25] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products
+[2025-08-26 16:34:25] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/categories
+[2025-08-26 16:34:25] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products
+[2025-08-26 16:34:32] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/order
+[2025-08-26 16:34:32] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/order
+[2025-08-26 16:34:33] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:34:33] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:34:33] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:34:33] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:34:34] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:34:34] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/user/all
+[2025-08-26 16:34:34] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/customer
+[2025-08-26 16:34:34] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/customer
+[2025-08-26 16:34:36] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/order
+[2025-08-26 16:34:36] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/order
+[2025-08-26 16:34:45] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products?search=&page=1&limit=6
+[2025-08-26 16:34:45] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products?search=&page=1&limit=6
+[2025-08-26 16:35:09] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products?search=&page=1&limit=6
+[2025-08-26 16:35:09] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products?search=&page=1&limit=6
+[2025-08-26 16:35:18] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products?search=&page=1&limit=6
+[2025-08-26 16:35:18] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products?search=&page=1&limit=6
+[2025-08-26 16:36:33] INFO: Server running on http://localhost:3000
+[2025-08-26 16:36:33] INFO: MongoDB connected successfully
+[2025-08-26 16:36:53] INFO: Server running on http://localhost:3000
+[2025-08-26 16:36:53] INFO: MongoDB connected successfully
+[2025-08-26 16:39:39] INFO: Server running on http://localhost:3000
+[2025-08-26 16:39:39] INFO: MongoDB connected successfully
+[2025-08-26 16:40:54] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/categories
+[2025-08-26 16:40:54] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/categories
+[2025-08-26 16:41:08] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/categories
+[2025-08-26 16:41:08] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/categories
+[2025-08-26 16:44:23] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products?page=1&limit=6&q=
+[2025-08-26 16:44:23] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products?page=1&limit=6&q=
+[2025-08-26 16:44:24] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/categories
+[2025-08-26 16:44:24] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/categories
+[2025-08-26 16:44:24] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products/66d000000000000000000011
+[2025-08-26 16:44:24] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products/66d000000000000000000011
+[2025-08-26 16:45:02] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/categories
+[2025-08-26 16:45:03] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/categories
+[2025-08-26 16:45:03] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products/66d000000000000000000011
+[2025-08-26 16:45:03] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products/66d000000000000000000011
+[2025-08-26 16:45:16] INFO: User: 68a72407b93d0e730c1b892d | Method: PUT | URL: /api/products/66d000000000000000000011
+[2025-08-26 16:45:17] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products?page=1&limit=6&q=
+[2025-08-26 16:45:17] INFO: User: 68a72407b93d0e730c1b892d | Method: GET | URL: /api/products?page=1&limit=6&q=
+[2025-08-26 16:45:36] INFO: Server running on http://localhost:3000
+[2025-08-26 16:45:36] INFO: MongoDB connected successfully
+[2025-08-26 16:46:15] INFO: Server running on http://localhost:3000
+[2025-08-26 16:46:15] INFO: MongoDB connected successfully
+[2025-08-26 16:55:28] INFO: Server running on http://localhost:3000
+[2025-08-26 16:55:28] INFO: MongoDB connected successfully
+[2025-08-26 16:55:34] INFO: {"time":"2025-08-26T09:55:34.247Z","userId":"68a72407b93d0e730c1b892d","method":"GET","url":"/api/products?page=1&limit=6&q=","statusCode":304,"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0","duration":"151ms"}
+[2025-08-26 16:55:34] INFO: {"time":"2025-08-26T09:55:34.477Z","userId":"68a72407b93d0e730c1b892d","method":"GET","url":"/api/products?page=1&limit=6&q=","statusCode":304,"ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0","duration":"32ms"}
+[2025-08-26 17:11:27] INFO: Server running on http://localhost:3000
+[2025-08-26 17:11:27] INFO: MongoDB connected successfully

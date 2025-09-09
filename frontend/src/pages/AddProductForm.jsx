@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, XCircle, Package, DollarSign, Image, FileText, Tag, AlertCircle, ToggleLeft, ToggleRight } from 'lucide-react';
-
+import authorApi from '../api/base/authorApi';
 const AddProductForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -23,11 +23,8 @@ const AddProductForm = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/categories');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
+        const response = await authorApi.get('http://localhost:3000/api/categories');
+        const data = await response.data;
         setCategories(data);
       } catch (err) {
         console.error('Không thể tải danh mục:', err);
@@ -42,7 +39,7 @@ const AddProductForm = () => {
   // Validation functions
   const validateField = (name, value) => {
     const errors = {};
-    
+
     switch (name) {
       case 'name':
         if (!value.trim()) {
@@ -53,7 +50,7 @@ const AddProductForm = () => {
           errors.name = 'Tên sản phẩm không được quá 100 ký tự';
         }
         break;
-      
+
       case 'price':
         if (!value) {
           errors.price = 'Giá sản phẩm không được để trống';
@@ -63,29 +60,29 @@ const AddProductForm = () => {
           errors.price = 'Giá sản phẩm không được quá 1 tỷ VND';
         }
         break;
-      
+
       case 'image':
         if (value && !isValidUrl(value)) {
           errors.image = 'URL hình ảnh không hợp lệ';
         }
         break;
-      
+
       case 'description':
         if (value && value.length > 1000) {
           errors.description = 'Mô tả không được quá 1000 ký tự';
         }
         break;
-      
+
       case 'categoryId':
         if (!value) {
           errors.categoryId = 'Vui lòng chọn danh mục';
         }
         break;
-      
+
       default:
         break;
     }
-    
+
     return errors;
   };
 
@@ -100,7 +97,7 @@ const AddProductForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     // Clear field error when user starts typing
     if (fieldErrors[name]) {
       setFieldErrors(prev => ({
@@ -108,12 +105,12 @@ const AddProductForm = () => {
         [name]: ''
       }));
     }
-    
+
     setFormData(prevData => ({
       ...prevData,
       [name]: value
     }));
-    
+
     // Real-time validation
     const errors = validateField(name, value);
     setFieldErrors(prev => ({
@@ -132,7 +129,7 @@ const AddProductForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validate all fields
     let allErrors = {};
     Object.keys(formData).forEach(field => {
@@ -141,12 +138,12 @@ const AddProductForm = () => {
         allErrors = { ...allErrors, ...errors };
       }
     });
-    
+
     if (Object.keys(allErrors).length > 0) {
       setFieldErrors(allErrors);
       return;
     }
-    
+
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -156,19 +153,9 @@ const AddProductForm = () => {
         ...formData,
         price: Number(formData.price)
       };
-      
-      const response = await fetch('http://localhost:3000/api/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submitData),
-      });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Lỗi khi thêm sản phẩm');
-      }
+      const response = await authorApi.post('http://localhost:3000/api/products', submitData);
+      await response.data;
 
       setSuccess(true);
       setFormData({
@@ -246,7 +233,7 @@ const AddProductForm = () => {
           <div className="p-8">
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                
+
                 {/* Cột 1: Thông tin cơ bản */}
                 <div className="space-y-6">
                   <div className="flex items-center gap-3 pb-4 border-b border-gray-200">
@@ -255,7 +242,7 @@ const AddProductForm = () => {
                     </div>
                     <h2 className="text-lg font-semibold text-gray-900">Thông Tin Cơ Bản</h2>
                   </div>
-                  
+
                   <div className="space-y-5">
                     <div>
                       <label htmlFor="name" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
@@ -268,11 +255,10 @@ const AddProductForm = () => {
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        className={`w-full px-4 py-3 rounded-lg border ${
-                          fieldErrors.name 
-                            ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' 
-                            : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500/20'
-                        } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
+                        className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.name
+                          ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
+                          : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500/20'
+                          } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
                         placeholder="Nhập tên sản phẩm..."
                       />
                       {fieldErrors.name && (
@@ -282,7 +268,7 @@ const AddProductForm = () => {
                         </div>
                       )}
                     </div>
-                    
+
                     <div>
                       <label htmlFor="price" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                         <DollarSign className="w-4 h-4 text-green-600" />
@@ -294,11 +280,10 @@ const AddProductForm = () => {
                         name="price"
                         value={formData.price ? formatNumber(formData.price) : ''}
                         onChange={(e) => handleNumberChange(e, 'price')}
-                        className={`w-full px-4 py-3 rounded-lg border ${
-                          fieldErrors.price 
-                            ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' 
-                            : 'border-gray-300 focus:border-green-500 focus:ring-green-500/20'
-                        } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
+                        className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.price
+                          ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
+                          : 'border-gray-300 focus:border-green-500 focus:ring-green-500/20'
+                          } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
                         placeholder="0"
                       />
                       {fieldErrors.price && (
@@ -308,7 +293,7 @@ const AddProductForm = () => {
                         </div>
                       )}
                     </div>
-                    
+
                     <div>
                       <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
                         {formData.status === 'Available' ? (
@@ -321,11 +306,10 @@ const AddProductForm = () => {
                       <button
                         type="button"
                         onClick={handleStatusToggle}
-                        className={`w-full px-4 py-3 rounded-lg border-2 transition-all duration-200 font-medium ${
-                          formData.status === 'Available'
-                            ? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
-                            : 'border-red-300 bg-red-50 text-red-800 hover:bg-red-100'
-                        }`}
+                        className={`w-full px-4 py-3 rounded-lg border-2 transition-all duration-200 font-medium ${formData.status === 'Available'
+                          ? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
+                          : 'border-red-300 bg-red-50 text-red-800 hover:bg-red-100'
+                          }`}
                       >
                         <div className="flex items-center justify-center gap-2">
                           {formData.status === 'Available' ? (
@@ -356,7 +340,7 @@ const AddProductForm = () => {
                     </div>
                     <h2 className="text-lg font-semibold text-gray-900">Hình Ảnh & Mô Tả</h2>
                   </div>
-                  
+
                   <div className="space-y-5">
                     <div>
                       <label htmlFor="image" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
@@ -369,11 +353,10 @@ const AddProductForm = () => {
                         name="image"
                         value={formData.image}
                         onChange={handleChange}
-                        className={`w-full px-4 py-3 rounded-lg border ${
-                          fieldErrors.image 
-                            ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' 
-                            : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500/20'
-                        } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
+                        className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.image
+                          ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
+                          : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500/20'
+                          } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
                         placeholder="https://example.com/image.jpg"
                       />
                       {fieldErrors.image && (
@@ -383,7 +366,7 @@ const AddProductForm = () => {
                         </div>
                       )}
                     </div>
-                    
+
                     <div>
                       <label htmlFor="description" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                         <FileText className="w-4 h-4 text-orange-600" />
@@ -395,11 +378,10 @@ const AddProductForm = () => {
                         value={formData.description}
                         onChange={handleChange}
                         rows="6"
-                        className={`w-full px-4 py-3 rounded-lg border ${
-                          fieldErrors.description 
-                            ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' 
-                            : 'border-gray-300 focus:border-orange-500 focus:ring-orange-500/20'
-                        } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500 resize-none`}
+                        className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.description
+                          ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
+                          : 'border-gray-300 focus:border-orange-500 focus:ring-orange-500/20'
+                          } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500 resize-none`}
                         placeholder="Nhập mô tả chi tiết về sản phẩm..."
                       ></textarea>
                       {fieldErrors.description && (
@@ -423,7 +405,7 @@ const AddProductForm = () => {
                     </div>
                     <h2 className="text-lg font-semibold text-gray-900">Phân Loại</h2>
                   </div>
-                  
+
                   <div>
                     <label htmlFor="categoryId" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                       <Tag className="w-4 h-4 text-indigo-600" />
@@ -443,11 +425,10 @@ const AddProductForm = () => {
                           name="categoryId"
                           value={formData.categoryId}
                           onChange={handleChange}
-                          className={`w-full px-4 py-3 rounded-lg border ${
-                            fieldErrors.categoryId 
-                              ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' 
-                              : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500/20'
-                          } focus:ring-4 transition-all duration-200 bg-white text-gray-900`}
+                          className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.categoryId
+                            ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
+                            : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500/20'
+                            } focus:ring-4 transition-all duration-200 bg-white text-gray-900`}
                         >
                           <option value="">Chọn danh mục</option>
                           {categories.map(category => (
@@ -471,11 +452,10 @@ const AddProductForm = () => {
                     <button
                       type="submit"
                       disabled={loading || categoriesLoading || Object.keys(fieldErrors).some(key => fieldErrors[key])}
-                      className={`w-full px-6 py-4 rounded-lg font-semibold text-lg transition-all duration-200 ${
-                        loading || categoriesLoading || Object.keys(fieldErrors).some(key => fieldErrors[key])
-                          ? 'bg-gray-400 text-white cursor-not-allowed'
-                          : 'bg-slate-800 hover:bg-slate-700 text-white shadow-sm hover:shadow-md'
-                      }`}
+                      className={`w-full px-6 py-4 rounded-lg font-semibold text-lg transition-all duration-200 ${loading || categoriesLoading || Object.keys(fieldErrors).some(key => fieldErrors[key])
+                        ? 'bg-gray-400 text-white cursor-not-allowed'
+                        : 'bg-slate-800 hover:bg-slate-700 text-white shadow-sm hover:shadow-md'
+                        }`}
                     >
                       {loading ? (
                         <div className="flex items-center justify-center gap-3">

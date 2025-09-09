@@ -1,11 +1,10 @@
-import axios from "axios";
 const API_URL = "http://localhost:3000/api/categories";
+import authorApi from "../api/base/authorApi";
+export const getCategories = () => authorApi.get(API_URL);
+export const getCategoryById = (id) => authorApi.get(`${API_URL}/${id}`);
+export const createCategory = (data) => authorApi.post(API_URL, data);
+export const updateCategory = (id, data) => authorApi.put(`${API_URL}/${id}`, data);
+export const deleteCategory = (id) => authorApi.delete(`${API_URL}/${id}`);
 
-export const getCategories = () => axios.get(API_URL);
-export const getCategoryById = (id) => axios.get(`${API_URL}/${id}`);
-export const createCategory = (data) => axios.post(API_URL, data);
-export const updateCategory = (id, data) => axios.put(`${API_URL}/${id}`, data);
-export const deleteCategory = (id) => axios.delete(`${API_URL}/${id}`);
-
-export const searchCategories  = (status = "Active") =>
-  axios.get(API_URL, { params: { status } });
+export const searchCategories = (status = "Active") =>
+  authorApi.get(API_URL, { params: { status } });

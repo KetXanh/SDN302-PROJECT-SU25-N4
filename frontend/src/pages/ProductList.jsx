@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Edit, Trash2, MoreVertical, Plus, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
+import authorAPI from '../api/base/authorApi';
 const ProductList = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -28,13 +28,22 @@ const ProductList = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/products?page=${currentPage}&limit=${limit}&search=${searchQuery}`
-      );
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
+      // const response = await fetch(
+      //   `http://localhost:3000/api/products?page=${currentPage}&limit=${limit}&search=${searchQuery}`
+      // );
+
+      const response = await authorAPI.get('/products', {
+        params: {
+          page: currentPage,
+          limit,
+          q: searchQuery,
+        },
+      });
+
+      // if (!response.ok) {
+      //   throw new Error('Network response was not ok');
+      // }
+      const data = await response.data;
       setProducts(data.products);
       setTotalPages(data.totalPages);
     } catch (err) {
@@ -76,24 +85,14 @@ const ProductList = () => {
     setDeleteStatus({ success: false, message: '' });
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/products/${productToDelete._id}`,
-        {
-          method: 'DELETE',
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to delete product');
-      }
-
+      await authorAPI.delete(`/products/${productToDelete._id}`);
       setDeleteStatus({ success: true, message: 'Xóa sản phẩm thành công!' });
       setProducts(products.filter((p) => p._id !== productToDelete._id));
       setProductToDelete(null);
-      
+
       // Tải lại dữ liệu để cập nhật lại phân trang
       fetchProducts();
-      
+
     } catch (err) {
       setDeleteStatus({ success: false, message: 'Lỗi: Không thể xóa sản phẩm.' });
       console.error('Lỗi khi xóa sản phẩm:', err);
@@ -179,9 +178,8 @@ const ProductList = () => {
         {/* Delete status message */}
         {deleteStatus.message && (
           <div
-            className={`p-4 rounded-md mb-4 ${
-              deleteStatus.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-            }`}
+            className={`p-4 rounded-md mb-4 ${deleteStatus.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+              }`}
           >
             {deleteStatus.message}
           </div>
@@ -252,11 +250,10 @@ const ProductList = () => {
                       </td>
                       <td className="w-32 px-6 py-4 text-left">
                         <span
-                          className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                            product.status === 'Available'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
-                          }`}
+                          className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${product.status === 'Available'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                            }`}
                         >
                           {product.status === 'Available' ? 'Có sẵn' : 'Hết hàng'}
                         </span>
@@ -291,18 +288,16 @@ const ProductList = () => {
                 <button
                   onClick={() => setCurrentPage(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 ${
-                    currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
+                  className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
                 >
                   Trang trước
                 </button>
                 <button
                   onClick={() => setCurrentPage(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className={`ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 ${
-                    currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
+                  className={`ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
                 >
                   Trang sau
                 </button>

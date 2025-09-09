@@ -132,11 +132,10 @@ const EditUserModal = ({ open, onClose, user, onEdit }) => {
                   name="email"
                   value={form.email}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg border ${
-                    fieldErrors.email
-                      ? "border-red-300 focus:border-red-500 focus:ring-red-500/20"
-                      : "border-gray-300 focus:border-blue-500 focus:ring-blue-500/20"
-                  } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
+                  className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.email
+                    ? "border-red-300 focus:border-red-500 focus:ring-red-500/20"
+                    : "border-gray-300 focus:border-blue-500 focus:ring-blue-500/20"
+                    } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
                   placeholder="Nhập email..."
                 />
                 {fieldErrors.email && (
@@ -156,11 +155,10 @@ const EditUserModal = ({ open, onClose, user, onEdit }) => {
                   name="fullname"
                   value={form.fullname}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg border ${
-                    fieldErrors.fullname
-                      ? "border-red-300 focus:border-red-500 focus:ring-red-500/20"
-                      : "border-gray-300 focus:border-blue-500 focus:ring-blue-500/20"
-                  } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
+                  className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.fullname
+                    ? "border-red-300 focus:border-red-500 focus:ring-red-500/20"
+                    : "border-gray-300 focus:border-blue-500 focus:ring-blue-500/20"
+                    } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
                   placeholder="Nhập họ tên..."
                 />
                 {fieldErrors.fullname && (
@@ -180,11 +178,10 @@ const EditUserModal = ({ open, onClose, user, onEdit }) => {
                   name="phone"
                   value={form.phone}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg border ${
-                    fieldErrors.phone
-                      ? "border-red-300 focus:border-red-500 focus:ring-red-500/20"
-                      : "border-gray-300 focus:border-blue-500 focus:ring-blue-500/20"
-                  } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
+                  className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.phone
+                    ? "border-red-300 focus:border-red-500 focus:ring-red-500/20"
+                    : "border-gray-300 focus:border-blue-500 focus:ring-blue-500/20"
+                    } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
                   placeholder="Nhập số điện thoại..."
                 />
                 {fieldErrors.phone && (
@@ -206,11 +203,10 @@ const EditUserModal = ({ open, onClose, user, onEdit }) => {
                   name="address"
                   value={form.address}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg border ${
-                    fieldErrors.address
-                      ? "border-red-300 focus:border-red-500 focus:ring-red-500/20"
-                      : "border-gray-300 focus:border-blue-500 focus:ring-blue-500/20"
-                  } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
+                  className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.address
+                    ? "border-red-300 focus:border-red-500 focus:ring-red-500/20"
+                    : "border-gray-300 focus:border-blue-500 focus:ring-blue-500/20"
+                    } focus:ring-4 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500`}
                   placeholder="Nhập địa chỉ..."
                 />
                 {fieldErrors.address && (
@@ -220,7 +216,7 @@ const EditUserModal = ({ open, onClose, user, onEdit }) => {
                   </div>
                 )}
               </div>
-              <div>
+              {/* <div>
                 <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                   <Shield className="w-4 h-4 text-gray-500" />
                   Vai trò *
@@ -234,7 +230,7 @@ const EditUserModal = ({ open, onClose, user, onEdit }) => {
                   <option value="Admin">Admin</option>
                   <option value="Employee">Employee</option>
                 </select>
-              </div>
+              </div> */}
               <div>
                 <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
                   <User className="w-4 h-4 text-gray-500" />
@@ -260,11 +256,10 @@ const EditUserModal = ({ open, onClose, user, onEdit }) => {
                 loading ||
                 Object.values(fieldErrors).some((err) => err)
               }
-              className={`w-full px-6 py-4 rounded-lg font-semibold text-lg transition-all duration-200 ${
-                loading || Object.values(fieldErrors).some((err) => err)
-                  ? "bg-gray-400 text-white cursor-not-allowed"
-                  : "bg-yellow-600 hover:bg-yellow-500 text-white shadow-sm hover:shadow-md"
-              }`}
+              className={`w-full px-6 py-4 rounded-lg font-semibold text-lg transition-all duration-200 ${loading || Object.values(fieldErrors).some((err) => err)
+                ? "bg-gray-400 text-white cursor-not-allowed"
+                : "bg-yellow-600 hover:bg-yellow-500 text-white shadow-sm hover:shadow-md"
+                }`}
             >
               {loading ? (
                 <div className="flex items-center justify-center gap-3">

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../../context/AuthContext";
 
+// eslint-disable-next-line no-unused-vars
 const Header = ({ darkMode, toggleDarkMode, toggleSidebar }) => {
   const navigate = useNavigate();
   const { logout, user } = useAuth();

@@ -3,7 +3,7 @@ const router = express.Router();
 
 // Import middleware
 const { authenticateJWT } = require('../middlewares/jwtMiddleware');
-
+const { logUserActivity } = require('../config/logger');
 // Import routes 
 const authRoutes = require('./auth.route');
 const userRoutes = require('./user.route');
@@ -13,14 +13,12 @@ const discountRoyters = require("./discount");
 const categoryRoyters = require("./category")
 
 // Use routes
-router.use('/auth', authRoutes);
-router.use('/user',authenticateJWT, userRoutes);
-router.use("/order", authenticateJWT , orderRoutes);
-// router.use("/products", require("./product"));
-// router.use("/category",categoryRoyters);
-router.use("/customer", customerRouters);
-router.use("/discount", discountRoyters);
-router.use('/products', require('./product.admin.route'));
-router.use('/categories', require('./category.admin.route'));
+router.use('/auth', logUserActivity, authRoutes);
+router.use('/user', authenticateJWT, logUserActivity, userRoutes);
+router.use("/order", authenticateJWT, logUserActivity, orderRoutes);
+router.use("/customer", authenticateJWT, logUserActivity, customerRouters);
+router.use("/discount", authenticateJWT, logUserActivity, discountRoyters);
+router.use('/products', authenticateJWT, logUserActivity, require('./product.admin.route'));
+router.use('/categories', authenticateJWT, logUserActivity, require('./category.admin.route'));
 
 module.exports = router;

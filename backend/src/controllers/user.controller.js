@@ -1,9 +1,10 @@
 const db = require("../models/index")
 const { hashPassword } = require("../utils/Hasher");
+const ExcelJS = require("exceljs");
 //Get All User
 const getUsers = async (req, res) => {
     try {
-        const users = await db.User.find().select('-__v -account').sort({ createdAt: 1 , status: 1});
+        const users = await db.User.find().select('-__v -account').sort({ createdAt: 1, status: 1 });
         const formatUsers = users.map(user => ({
             id: user._id,
             ...user._doc,
@@ -73,7 +74,7 @@ const createUser = async (req, res) => {
 //Update user
 const updateUser = async (req, res) => {
     try {
-        const {  email, fullname, gender, phone, address, role, avatar } = req.body;
+        const { email, fullname, gender, phone, address, role, avatar } = req.body;
         const user = await db.User.findById(req.params.id);
         if (!user) return res.status(404).json({ error: 'User not found' });
         Object.assign(user, {
@@ -96,6 +97,8 @@ const updateUser = async (req, res) => {
 const banUser = async (req, res) => {
     try {
         const user = await db.User.findById(req.params.id);
+        // const currentUser = await db.User.findById(req.user.id);
+        if (user.role === "Admin") return res.status(400).json({ error: 'Cannot ban admin with the same role as you' });
         if (!user) return res.status(404).json({ error: 'User not found' });
         user.status = "Banned";
         await user.save();
@@ -131,27 +134,178 @@ const deleteUser = async (req, res) => {
 
 //Get User Profile
 const getProfile = async (req, res) => {
-    try{
-       res.status(200).json("Test Profile")
-    }catch(err){
+    try {
+        res.status(200).json("Test Profile")
+    } catch (err) {
         res.status(500).json({ error: err.message });
     }
 }
 
 //Edit Profile
 const editProfile = async (req, res) => {
-    try{
+    try {
         const user = await db.User.findById(req.user.id);
         if (!user) return res.status(404).json({ error: 'User not found' });
         Object.assign(user, req.body);
         await user.save();
         res.status(200).json(user);
-    }catch(err){
+    } catch (err) {
         res.status(500).json({ error: err.message });
     }
 }
 
-module.exports={
+// Import list of users from frontend (JSON array)
+const importUsers = async (req, res) => {
+    try {
+        const { users } = req.body; // users: [ { username, password, email, ... }, ... ]
+        if (!users || !Array.isArray(users)) {
+            return res.status(400).json({ error: "Invalid users data" });
+        }
+        const createdUsers = [];
+
+        //Check username is unique in the import list
+        const usernames = users.map(u => u.username);
+        const uniqueUsernames = new Set(usernames);
+        if (uniqueUsernames.size !== usernames.length) {
+            return res.status(400).json({ error: "Failed to import user data with error: Usernames in the import list must be unique" });
+        }
+        //Check email is unique in the import list
+        const emails = users.map(u => u.email);
+        const uniqueEmails = new Set(emails);
+        if (uniqueEmails.size !== emails.length) {
+            return res.status(400).json({ error: "Failed to import user data with error: Emails in the import list must be unique" });
+        }
+
+        //Validate each user
+        for (let u of users) {
+            u.username = u.username.trim();
+            u.email = u.email.trim().toLowerCase();
+            u.role = u.role.trim();
+            if (!u.username || !u.email || !u.role) continue;
+
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(u.email)) {
+                return res.status(400).json({ error: `Failed to import user data with error: Invalid email format for ${u.email}` });
+            }
+            // Validate role
+            const validRoles = ["Admin", "Manager", "Employee"];
+            if (!validRoles.includes(u.role)) {
+                return res.status(400).json({ error: `Failed to import user data with error: Invalid role for ${u.username}. Must be one of ${validRoles.join(", ")}` });
+            }
+
+            // Validate date createdAt, updatedAt if provided
+            if (u.createdAt && isNaN(Date.parse(u.createdAt))) {
+                return res.status(400).json({ error: `Failed to import user data with error: Invalid createdAt date for ${u.username}` });
+            }
+            if (u.updatedAt && isNaN(Date.parse(u.updatedAt))) {
+                return res.status(400).json({ error: `Failed to import user data with error: Invalid updatedAt date for ${u.username}` });
+            }
+
+            // Check username tồn tại
+            const existedUser = await db.User.findOne({ "account.username": u.username });
+            if (existedUser) throw ({ error: `Failed to import user data with error: Username ${u.username} already exists` });
+
+            // Check email tồn tại
+            const existedEmail = await db.User.findOne({ email: u.email });
+            if (existedEmail) throw ({ error: `Failed to import user data with error: Email: ${u.email} already exists` });
+        }
+
+        // Create users
+        for (let u of users) {
+            const hashPasswordValue = await hashPassword(u.password || "123456");
+            const newUser = await db.User.create({
+                account: {
+                    username: u.username,
+                    password: hashPasswordValue
+                },
+                email: u.email,
+                fullname: u.fullname,
+                gender: u.gender,
+                phone: u.phone,
+                address: u.address,
+                role: u.role,
+                status: u.status || "Active",
+                avatar: u.avatar || "",
+            });
+            createdUsers.push(newUser);
+        }
+
+        res.status(201).json({
+            message: "Import successful",
+            count: createdUsers.length,
+            users: createdUsers,
+        });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+
+// Export list of users to Excel file
+const exportUsers = async (req, res) => {
+    try {
+        const users = await db.User.find().select("-avatar -__v").lean();
+
+        // Tạo workbook và worksheet
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet("Users");
+
+        // Header
+        worksheet.columns = [
+            { header: "Username", key: "username", width: 20 },
+            { header: "Full Name", key: "fullname", width: 25 },
+            { header: "Email", key: "email", width: 30 },
+            { header: "Gender", key: "gender", width: 10 },
+            { header: "Phone", key: "phone", width: 15 },
+            { header: "Address", key: "address", width: 30 },
+            { header: "Role", key: "role", width: 12 },
+            { header: "Status", key: "status", width: 12 },
+            { header: "Created At", key: "createdAt", width: 20 },
+            { header: "Updated At", key: "updatedAt", width: 20 },
+        ];
+
+        // Data
+        users.forEach((u) => {
+            worksheet.addRow({
+                username: u.account.username,
+                fullname: u.fullname || "N/A",
+                email: u.email || "N/A",
+                gender: u.gender || "N/A",
+                phone: u.phone || "N/A",
+                address: u.address || "N/A",
+                role: u.role || "N/A",
+                status: u.status,
+                createdAt: u.createdAt || "N/A",
+                updatedAt: u.updatedAt || "N/A",
+            });
+        });
+
+        // Style header
+        worksheet.getRow(1).eachCell((cell) => {
+            cell.font = { bold: true };
+            cell.fill = {
+                type: "pattern",
+                pattern: "solid",
+                fgColor: { argb: "CCCCCC" },
+            };
+        });
+
+        // Gửi file về client
+        res.setHeader(
+            "Content-Type",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        );
+        res.setHeader("Content-Disposition", "attachment; filename=users.xlsx");
+
+        await workbook.xlsx.write(res);
+        res.end();
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+
+module.exports = {
     getUsers,
     getUserById,
     createUser,
@@ -160,5 +314,7 @@ module.exports={
     activateUser,
     deleteUser,
     getProfile,
-    editProfile
+    editProfile,
+    importUsers,
+    exportUsers
 }

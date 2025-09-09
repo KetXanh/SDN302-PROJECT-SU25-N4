@@ -1,17 +1,16 @@
-import axios from "axios";
 
 const API_URL = "http://localhost:3000/api/discount";
-
-export const getDiscounts = () => axios.get(API_URL);
-export const getDiscountById = (id) => axios.get(`${API_URL}/${id}`);
-export const createDiscount = (data) => axios.post(API_URL, data);
-export const updateDiscount = (id, data) => axios.put(`${API_URL}/${id}`, data);
-export const deleteDiscount = (id) => axios.delete(`${API_URL}/${id}`);
+import authorApi from "../api/base/authorApi";
+export const getDiscounts = () => authorApi.get(API_URL);
+export const getDiscountById = (id) => authorApi.get(`${API_URL}/${id}`);
+export const createDiscount = (data) => authorApi.post(API_URL, data);
+export const updateDiscount = (id, data) => authorApi.put(`${API_URL}/${id}`, data);
+export const deleteDiscount = (id) => authorApi.delete(`${API_URL}/${id}`);
 
 export const getDiscountByCode = async (code) => {
   try {
-    const res = await axios.get(`${API_URL}/code/${code}`);
-    return res.data; 
+    const res = await authorApi.get(`${API_URL}/code/${code}`);
+    return res.data;
   } catch (err) {
     console.error("Error fetching discount by code", err);
     return null;

@@ -3,21 +3,24 @@ import useUser from '../../hooks/useUser';
 
 //Icon
 import { Search } from 'lucide-react';
-import { Edit2, Ban, CheckCircle, UserPlus, Eye } from 'lucide-react';
+import { Edit2, Ban, CheckCircle, UserPlus, Eye, Download } from 'lucide-react';
 
 // Modal components
 import AddUserModal from './AddUserModal';
 import EditUserModal from './EditUserModal';
 import UserDetailModal from './UserDetailModal';
 import ConfirmModal from '../Common/ConfirmModal';
+import ImportUserModal from './ImportUserModal';
 
 const PAGE_SIZE = 5;
 
 const ListUser = () => {
-  const { users, loading, error, updateUser, banUser, activateUser } = useUser();
+  // Parse currentUser from localStorage
+  const currentUser = JSON.parse(localStorage.getItem('user'));
+  const { users, loading, error, updateUser, banUser, activateUser, exportUsers, importUsers } = useUser();
   const [search, setSearch] = useState('');
   const [openAdd, setOpenAdd] = useState(false);
-
+  const [openImport, setOpenImport] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
@@ -27,7 +30,7 @@ const ListUser = () => {
 
   // Confirm modal state
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [confirmAction, setConfirmAction] = useState(() => () => {});
+  const [confirmAction, setConfirmAction] = useState(() => () => { });
   const [confirmMessage, setConfirmMessage] = useState('');
   const [confirmType, setConfirmType] = useState('default');
 
@@ -132,6 +135,21 @@ const ListUser = () => {
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none w-64"
                 />
               </div>
+              {/* Export Button */}
+              <button
+                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition"
+                onClick={exportUsers}
+              >
+                <Download size={18} />
+                Xuất Excel
+              </button>
+              <button
+                className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded transition"
+                onClick={() => setOpenImport(true)}
+              >
+                <Download size={18} />
+                Import Excel
+              </button>
               <button
                 className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition"
                 onClick={() => setOpenAdd(true)}
@@ -171,6 +189,9 @@ const ListUser = () => {
         type={confirmType}
       />
 
+      {/* Import User Modal */}
+      <ImportUserModal open={openImport} onClose={() => setOpenImport(false)} onUpload={importUsers} />
+
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading && (
@@ -185,7 +206,7 @@ const ListUser = () => {
               <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-gray-600 text-xl">⚠️</span>
               </div>
-              <p className="text-gray-900 font-medium">{error}</p>
+              <p className="text-gray-900 font-medium">{error.response.data?.message || error.response.data?.error || "Internal Server Error"}</p>
             </div>
           </div>
         )}
@@ -250,11 +271,10 @@ const ListUser = () => {
                       <td className="px-6 py-4 text-left">{user.role}</td>
                       <td className="px-6 py-4 text-left">
                         <span
-                          className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                            user.status === 'Active'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
-                          }`}
+                          className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${user.status === 'Active'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                            }`}
                         >
                           {user.status}
                         </span>
@@ -262,14 +282,17 @@ const ListUser = () => {
                       <td className="px-6 py-4 text-left">{user.gender}</td>
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-center gap-2">
-                          <button
-                            className="text-blue-500 hover:bg-blue-100 p-2 rounded"
-                            onClick={() => handleOpenEdit(user.id)}
-                            title="Edit"
-                          >
-                            <Edit2 size={18} />
-                          </button>
-                          {user.status === 'Active' ? (
+                          {currentUser && currentUser.role === 'Admin' && currentUser.id === user.id && (
+                            <button
+                              className="text-blue-500 hover:bg-blue-100 p-2 rounded"
+                              onClick={() => handleOpenEdit(user.id)}
+                              title="Edit"
+                            >
+                              <Edit2 size={18} />
+                            </button>
+                          )}
+
+                          {(user.status === 'Active') && user.role !== 'Admin' && (
                             <button
                               className="text-red-500 hover:bg-red-100 p-2 rounded"
                               onClick={() => handleConfirmBan(user.id)}
@@ -277,11 +300,12 @@ const ListUser = () => {
                             >
                               <Ban size={18} />
                             </button>
-                          ) : (
+                          )}
+                          {(user.status === 'Banned' || user.status === 'Inactive') && user.role !== 'Admin' && (
                             <button
                               className="text-green-500 hover:bg-green-100 p-2 rounded"
                               onClick={() => handleConfirmActivate(user.id)}
-                              title="Active"
+                              title="Activate"
                             >
                               <CheckCircle size={18} />
                             </button>
@@ -312,11 +336,10 @@ const ListUser = () => {
               {Array.from({ length: Math.max(totalPage, 1) }, (_, i) => (
                 <button
                   key={i + 1}
-                  className={`px-3 py-1 rounded border ${
-                    page === i + 1
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
+                  className={`px-3 py-1 rounded border ${page === i + 1
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
                   onClick={() => handlePageChange(i + 1)}
                 >
                   {i + 1}

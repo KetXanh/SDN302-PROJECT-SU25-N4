@@ -126,6 +126,34 @@ const useUser = () => {
     }
   };
 
+  const importUsers = async (formData) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await userAPI.importUsers(formData);
+      await fetchUsers();
+      return data;
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const exportUsers = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      await userAPI.exportUsers();
+    } catch (err) {
+      setError(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -143,6 +171,8 @@ const useUser = () => {
     banUser,
     activateUser,
     editProfile,
+    exportUsers,
+    importUsers
   };
 };
 

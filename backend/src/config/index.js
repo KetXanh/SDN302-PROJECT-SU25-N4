@@ -1,9 +1,10 @@
 const applyConfig = require('./corConfig');
 const connectDB = require('./database');
-const logger = require('./logger');
+const { logger, logUserActivity } = require('./logger');
 
 module.exports = {
     connectDB,
+    logUserActivity,
     logger,
     applyConfig
 };

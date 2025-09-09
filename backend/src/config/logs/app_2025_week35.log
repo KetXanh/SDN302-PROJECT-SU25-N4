@@ -1,0 +1,57 @@
+[2025-08-26 16:01:41] INFO: Server running on http://localhost:3000
+[2025-08-26 16:04:15] INFO: Server running on http://localhost:3000
+[2025-08-26 16:04:16] INFO: MongoDB connected successfully
+[2025-08-26 16:04:19] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:19] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:19] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:19] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:19] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:19] INFO: User: Guest | Method: POST | URL: /api/auth/refresh-token
+[2025-08-26 16:04:20] INFO: User: Guest | Method: POST | URL: /api/auth/refresh-token
+[2025-08-26 16:04:20] INFO: User: Guest | Method: POST | URL: /api/auth/refresh-token
+[2025-08-26 16:04:20] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:20] INFO: User: Guest | Method: POST | URL: /api/auth/refresh-token
+[2025-08-26 16:04:20] INFO: User: Guest | Method: POST | URL: /api/auth/refresh-token
+[2025-08-26 16:04:20] INFO: User: Guest | Method: POST | URL: /api/auth/refresh-token
+[2025-08-26 16:04:20] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:20] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:20] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:20] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:20] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:20] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:37] INFO: User: Guest | Method: POST | URL: /api/auth/logout
+[2025-08-26 16:04:43] INFO: User: Guest | Method: POST | URL: /api/auth/login
+[2025-08-26 16:04:43] INFO: User: Guest | Method: GET | URL: /api/categories
+[2025-08-26 16:04:43] INFO: User: Guest | Method: GET | URL: /api/products
+[2025-08-26 16:04:43] INFO: User: Guest | Method: GET | URL: /api/categories
+[2025-08-26 16:04:43] INFO: User: Guest | Method: GET | URL: /api/products
+[2025-08-26 16:04:45] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:45] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:45] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:45] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:45] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:45] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:48] INFO: User: Guest | Method: PUT | URL: /api/user/ban/68a72407b93d0e730c1b892e
+[2025-08-26 16:04:55] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:55] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:55] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:55] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:55] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:55] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:04:58] INFO: User: Guest | Method: PUT | URL: /api/user/ban/68a72407b93d0e730c1b892e
+[2025-08-26 16:05:05] INFO: User: Guest | Method: PUT | URL: /api/user/activate/68a72407b93d0e730c1b892f
+[2025-08-26 16:05:05] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:05:09] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:05:09] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:05:09] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:05:09] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:05:09] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:05:09] INFO: User: Guest | Method: GET | URL: /api/user/all
+[2025-08-26 16:05:14] INFO: User: Guest | Method: PUT | URL: /api/user/ban/68a72407b93d0e730c1b892e
+[2025-08-26 16:05:25] INFO: User: Guest | Method: PUT | URL: /api/user/ban/68a72407b93d0e730c1b892f
+[2025-08-26 16:05:42] INFO: Server running on http://localhost:3000
+[2025-08-26 16:05:42] INFO: MongoDB connected successfully
+[2025-08-26 16:05:48] INFO: Server running on http://localhost:3000
+[2025-08-26 16:05:48] INFO: MongoDB connected successfully
+[2025-08-26 16:05:48] INFO: User: Guest | Method: PUT | URL: /api/user/ban/68a72407b93d0e730c1b892f
+[2025-08-26 16:05:48] INFO: User: Guest | Method: GET | URL: /api/user/all

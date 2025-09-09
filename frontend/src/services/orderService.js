@@ -1,5 +1,4 @@
-import axios from "axios";
-import authorAPI from "../api/base/authorAPI";
+import authorAPI from "../api/base/authorApi";
 const API_URL = "http://localhost:3000/api/order";
 
 export const getOrders = () => authorAPI.get(API_URL);

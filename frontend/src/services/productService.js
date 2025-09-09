@@ -1,12 +1,12 @@
-import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/products"; 
+const API_URL = "http://localhost:3000/api/products";
+import authorApi from "../api/base/authorApi";
 
-export const getProducts = () => axios.get(API_URL);
-export const getProductById = (id) => axios.get(`${API_URL}/${id}`);
-export const createProduct = (data) => axios.post(API_URL, data);
-export const updateProduct = (id, data) => axios.put(`${API_URL}/${id}`, data);
-export const deleteProduct = (id) => axios.delete(`${API_URL}/${id}`);
+export const getProducts = () => authorApi.get(API_URL);
+export const getProductById = (id) => authorApi.get(`${API_URL}/${id}`);
+export const createProduct = (data) => authorApi.post(API_URL, data);
+export const updateProduct = (id, data) => authorApi.put(`${API_URL}/${id}`, data);
+export const deleteProduct = (id) => authorApi.delete(`${API_URL}/${id}`);
 
 export const getProductsCus = async (
   q = "",
@@ -27,11 +27,11 @@ export const getProductsCus = async (
   let res;
   try {
     // thử endpoint chuẩn bạn mong muốn
-    res = await axios.get(API_URL, { params });
+    res = await authorApi.get(API_URL, { params });
   } catch (e) {
     // fallback nếu backend hiện chỉ có /api/products
     if (e?.response?.status === 404) {
-      res = await axios.get("http://localhost:3000/api/products", { params });
+      res = await authorApi.get("http://localhost:3000/api/products", { params });
     } else {
       throw e;
     }
@@ -56,13 +56,13 @@ export const getProductsCus = async (
     Array.isArray(payload)
       ? { page, limit, total: list.length, totalPages: 1 }
       : payload?.meta ?? {
-          page: payload?.currentPage ?? page,
-          limit,
-          total: payload?.totalProducts ?? list.length,
-          totalPages: payload?.totalPages ?? 1,
-        };
+        page: payload?.currentPage ?? page,
+        limit,
+        total: payload?.totalProducts ?? list.length,
+        totalPages: payload?.totalPages ?? 1,
+      };
 
   return { data: list, meta };
 };
 
-export const getProductByIdCus = (id) => axios.get(`${API_URL}/${id}`);
+export const getProductByIdCus = (id) => authorApi.get(`${API_URL}/${id}`);

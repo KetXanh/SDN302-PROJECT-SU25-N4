@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Save, XCircle, Image, Package, DollarSign, FileText, ToggleLeft, ToggleRight } from 'lucide-react';
-
+import authorApi from '../api/base/authorApi';
 const EditProductForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -26,17 +26,13 @@ const EditProductForm = () => {
       setError(null);
       try {
         // Fetch categories
-        const categoriesResponse = await fetch('http://localhost:3000/api/categories');
-        const categoriesData = await categoriesResponse.json();
+        const response = await authorApi.get('http://localhost:3000/api/categories');
+        const categoriesData = await response.data;
         setCategories(categoriesData);
-        
+
         // Fetch product
-        const productResponse = await fetch(`http://localhost:3000/api/products/${id}`);
-        if (!productResponse.ok) {
-          throw new Error('Product not found');
-        }
-        const productData = await productResponse.json();
-        console.log(productData)
+        const productResponse = await authorApi.get(`http://localhost:3000/api/products/${id}`);
+        const productData = await productResponse.data;
         setFormData({
           name: productData.name,
           price: productData.price,
@@ -62,7 +58,7 @@ const EditProductForm = () => {
       ...prevData,
       [name]: value
     }));
-    
+
     // Update image preview when image URL changes
     if (name === 'image') {
       setImagePreview(value);
@@ -83,17 +79,7 @@ const EditProductForm = () => {
     setError(null);
     setSuccess(false);
     try {
-      const response = await fetch(`http://localhost:3000/api/products/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to update product');
-      }
+      await authorApi.put(`http://localhost:3000/api/products/${id}`, formData);
       setSuccess(true);
       setTimeout(() => {
         navigate('/products');
@@ -113,8 +99,8 @@ const EditProductForm = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-6">
             <div className="flex items-center">
-              <button 
-                onClick={() => navigate('/products')} 
+              <button
+                onClick={() => navigate('/products')}
                 className="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200"
               >
                 <ArrowLeft size={20} className="mr-2" />
@@ -146,7 +132,7 @@ const EditProductForm = () => {
               </div>
             </div>
           )}
-          
+
           {error && (
             <div className="bg-red-50 border-l-4 border-red-500 p-4">
               <div className="flex items-center">
@@ -220,11 +206,10 @@ const EditProductForm = () => {
                     <button
                       type="button"
                       onClick={handleStatusToggle}
-                      className={`w-full px-4 py-3 rounded-lg border-2 transition-all duration-200 font-medium ${
-                        formData.status === 'Available'
-                          ? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
-                          : 'border-red-300 bg-red-50 text-red-800 hover:bg-red-100'
-                      }`}
+                      className={`w-full px-4 py-3 rounded-lg border-2 transition-all duration-200 font-medium ${formData.status === 'Available'
+                        ? 'border-green-300 bg-green-50 text-green-800 hover:bg-green-100'
+                        : 'border-red-300 bg-red-50 text-red-800 hover:bg-red-100'
+                        }`}
                     >
                       <div className="flex items-center justify-center gap-2">
                         {formData.status === 'Available' ? (
@@ -288,15 +273,15 @@ const EditProductForm = () => {
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                       placeholder="Nhập URL hình ảnh sản phẩm"
                     />
-                    
+
                     {/* Image Preview */}
                     {imagePreview && (
                       <div className="mt-4">
                         <p className="text-xs text-gray-500 mb-2">Xem trước hình ảnh:</p>
                         <div className="border border-gray-200 rounded-lg overflow-hidden">
-                          <img 
-                            src={imagePreview} 
-                            alt="Product preview" 
+                          <img
+                            src={imagePreview}
+                            alt="Product preview"
                             className="w-full h-48 object-cover"
                             onError={(e) => {
                               e.target.onerror = null;
